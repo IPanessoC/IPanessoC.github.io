@@ -24,3 +24,32 @@ body {
     /* tamaño de la imagen (primero ancho y luego largo) */
     background-size: 100% auto;
 }
+.contenedor-post {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    padding: 20px;
+    width: 50%;
+    height: 50px;
+    margin: 50px;
+    background-color: rgba(131, 42, 42, 0.2); /* Color de fondo opcional */
+    backdrop-filter: blur(10px); 
+    -webkit-backdrop-filter: blur(10px); 
+    border-radius: 25px;
+}
+.contenedor-pdf {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 90%;        /* Deja un 5% de margen a cada lado */
+    max-width: 1200px; /* No permite que se descontrole en pantallas gigantes */
+    height: 800px;     /* Altura amplia y cómoda */
+    margin: 0 auto; 
+}
+.contenedor-pdf embed,
+.contenedor-pdf iframe,
+.contenedor-pdf object {
+    width: 100% !important;
+    height: 100% !important;
+    border: none;
+}
