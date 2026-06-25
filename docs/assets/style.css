@@ -76,7 +76,76 @@ body {
     /* tamaño de la imagen (primero ancho y luego largo) */
     background-size: 100% auto;
 }
+/*ia*/
 .contenedor-post {
+    display: block; /* Cambiado a block para que la barra se quede arriba y el contenido abajo */
+    padding: 0;     /* Quitamos el padding global para que la barra llegue hasta los bordes */
+    height: auto;
+    margin: 50px;
+    width: 40%;
+    background-color: rgba(131, 42, 42, 0.2); 
+    backdrop-filter: blur(10px); 
+    -webkit-backdrop-filter: blur(10px); 
+    border-radius: 16px; /* Redondeado sutil más similar a macOS */
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.418);
+    border: 1px solid rgba(235, 140, 140, 0.18);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden; /* Clave: recorta el fondo oscuro de la barra en las esquinas superiores */
+}
+
+.contenedor-post-grande {
+    display: block; /* Cambiado a block para que la barra se quede arriba y el contenido abajo */
+    padding: 0;     /* Quitamos el padding global para que la barra llegue hasta los bordes */
+    height: 280px;
+    margin: 50px;
+    width: 80%;
+    background-color: rgba(131, 42, 42, 0.2); 
+    backdrop-filter: blur(10px); 
+    -webkit-backdrop-filter: blur(10px); 
+    border-radius: 16px; /* Redondeado sutil más similar a macOS */
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.418);
+    border: 1px solid rgba(235, 140, 140, 0.18);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden; /* Clave: recorta el fondo oscuro de la barra en las esquinas superiores */
+}
+
+
+/* Mantiene tu efecto de crecimiento en hover */
+.contenedor-post:hover {
+    transform: scale(1.03);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+}
+
+/* Mantiene tu efecto de crecimiento en hover */
+.contenedor-post-grande:hover {
+    transform: scale(1.03);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+}
+
+/* NUEVO: La barra superior estilo Mac (más oscura y clickeable) */
+.barra {
+    display: flex;
+    align-items: center;
+    background-color: rgba(40, 15, 15, 0.6); /* Una versión más oscura de tu fondo */
+    padding: 12px 20px;
+    cursor: pointer;
+    list-style: none; /* Esconde la flecha por defecto de la etiqueta summary */
+    user-select: none;
+}
+.barra::-webkit-details-marker {
+    display: none; /* Esconde la flecha en navegadores Safari/Chrome antiguos */
+}
+/* Título opcional en el centro de la barra */
+.titulo {
+    width: 100%;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 13px;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif; /* Tipografía oficial de Mac */
+}
+
+/*ia*/
+.contenido-post {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -92,22 +161,20 @@ body {
     border: 1px solid rgba(235, 140, 140, 0.18);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-.contenedor-post :hover {
-    padding: 10px;
-    margin: 10px;
+.contenido-post :hover {
     transform: scale(1.05); 
     text-align: center;
     display: flex;
     justify-content: center;
 }
-.contenedor-post-grande {
+.contenido-post-grande {
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 20px;
-    height: 175px;
+    height: 225px;
     margin: 50px;
-    width: 40%;
+    width: 80%;
     background-color: rgba(131, 42, 42, 0.2); /* Color de fondo opcional */
     backdrop-filter: blur(10px); 
     -webkit-backdrop-filter: blur(10px); 
@@ -116,9 +183,7 @@ body {
     border: 1px solid rgba(235, 140, 140, 0.18);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-.contenedor-post-grande :hover {
-    padding: 10px;
-    margin: 10px;
+.contenido-post-grande :hover {
     transform: scale(1.05);
     text-align: center;
     display: flex;
