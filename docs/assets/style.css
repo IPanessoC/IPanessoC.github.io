@@ -121,6 +121,20 @@ body {
     transform: scale(1.03);
     box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
 }
+
+/* NUEVO: La barra superior estilo Mac (más oscura y clickeable) */
+.barra {
+    display: flex;
+    align-items: center;
+    background-color: rgba(40, 15, 15, 0.6); /* Una versión más oscura de tu fondo */
+    padding: 12px 20px;
+    cursor: pointer;
+    list-style: none; /* Esconde la flecha por defecto de la etiqueta summary */
+    user-select: none;
+}
+.barra::-webkit-details-marker {
+    display: none; /* Esconde la flecha en navegadores Safari/Chrome antiguos */
+}
 /* Título opcional en el centro de la barra */
 .titulo {
     width: 100%;
