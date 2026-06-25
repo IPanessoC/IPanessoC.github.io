@@ -99,7 +99,6 @@ body {
     text-align: center;
     display: flex;
     justify-content: center;
-    align-items: center;
 }
 .contenedor-post-grande {
     display: flex;
@@ -119,12 +118,11 @@ body {
 }
 .contenedor-post-grande :hover {
     padding: 10px;
-    margin: 10px
-    transform: scale(1.05); 
-    text-align: center;;
+    margin: 10px;
+    transform: scale(1.05);
+    text-align: center;
     display: flex;
     justify-content: center;
-    align-items: center;
 }
 .contenedor-pdf {
     display: flex;
