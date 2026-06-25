@@ -7,7 +7,44 @@
     -webkit-backdrop-filter: blur(10px); 
     border-radius: 25px;
 }
+.nav-principal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 10px 20px; /* Espaciado interno */
+}
+/* Invocando la clase de la lista para hacerla horizontal */
+.lista-menu {
+    display: flex;          /* Alinea los elementos en fila horizontal */
+    justify-content: center;
+    align-items: center; 
+    list-style: none;       /* Quita los puntos negros de la lista */             /* Elimina los márgenes por defecto */
+    background-color: rgba(89, 52, 52, 0.2); /* Color de fondo opcional */
+    backdrop-filter: blur(10px); 
+    -webkit-backdrop-filter: blur(10px); 
+    border-radius: 25px;
+    width: 60%;
+}
 
+/* Invocando la clase de cada ítem para darles separación */
+.item-menu {
+    /* No requiere floats ni displays extra gracias a Flexbox del padre */
+}
+
+/* Estilizando los enlaces dentro de los ítems */
+.item-menu a {
+    display: block;         /* Hace que todo el recuadro sea clickeable */
+    color: rgb(0, 0, 0);           /* Color del texto */
+    text-decoration: none;  /* Quita la línea de subrayado */
+    padding: 15px 20px;     /* Da espacio arriba/abajo y a los lados */
+    border-radius: 25px;
+}
+
+/* Efecto visual al pasar el cursor */
+.item-menu a:hover {
+    background-color: #34495e; /* Cambia el fondo al pasar el mouse */
+}
 /* Controla tamaño de  imagen-SENA */
 .logo img {
     height: 75px;          /* Altura */
