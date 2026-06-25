@@ -34,6 +34,13 @@
 
 /* Invocando la clase de cada ítem para darles separación */
 .item-menu {
+    justify-content: left;
+    align-items: center;
+    text-align: center;
+    height: 100%;
+    width: 100%;
+    padding: 5px;
+    margin: 5px;
     /* No requiere floats ni displays extra gracias a Flexbox del padre */
 }
 
@@ -44,11 +51,14 @@
     text-decoration: none;  /* Quita la línea de subrayado */
     padding: 15px 20px;     /* Da espacio arriba/abajo y a los lados */
     border-radius: 25px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 /* Efecto visual al pasar el cursor */
 .item-menu a:hover {
-    background-color: #34495e; /* Cambia el fondo al pasar el mouse */
+    background-color: #965d78; /* Cambia el fondo al pasar el mouse */
+    transform: scale(1.05); 
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.418);
 }
 /* Controla tamaño de  imagen-SENA */
 .logo img {
@@ -68,11 +78,10 @@ body {
 }
 .contenedor-post {
     display: flex;
-    justify-content: left;
+    justify-content: center;
     align-items: center;
     padding: 20px;
-    width: 75%;
-    height: 50px;
+    height: auto;
     margin: 50px;
     width: 40%;
     background-color: rgba(131, 42, 42, 0.2); /* Color de fondo opcional */
@@ -81,10 +90,20 @@ body {
     border-radius: 25px;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.418);
     border: 1px solid rgba(235, 140, 140, 0.18);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.contenedor-post :hover {
+    padding: 10px;
+    margin: 10px;
+    transform: scale(1.05); 
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .contenedor-post-grande {
     display: flex;
-    justify-content: left;
+    justify-content: center;
     align-items: center;
     padding: 20px;
     height: 175px;
@@ -96,6 +115,16 @@ body {
     border-radius: 25px;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.418);
     border: 1px solid rgba(235, 140, 140, 0.18);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.contenedor-post-grande :hover {
+    padding: 10px;
+    margin: 10px
+    transform: scale(1.05); 
+    text-align: center;;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .contenedor-pdf {
     display: flex;
