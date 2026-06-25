@@ -224,3 +224,44 @@ body {
     height: auto;        /* Se adapta perfectamente a lo alto de forma natural */
     display: block;
 }
+.pie-pagina {
+    clear: both;   
+    display: flex;
+    justify-content: center; /* Centra el texto horizontalmente */
+    align-items: center;     /* Centra el texto verticalmente */
+    padding: 20px;
+    margin-top: 50px;        /* Separa el pie de página de los contenedores de arriba */
+    width: 100%;
+    flex-basis: 100%;        /* OBLIGA a Flexbox a darle una línea exclusiva al footer */
+    box-sizing: border-box;
+    
+    /* Mantiene tu estética de cristal opaco oscuro */
+    background-color: rgba(40, 15, 15, 0.6); 
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    
+    /* Borde superior sutil para dar volumen */
+    border-top: 1px solid rgba(235, 140, 140, 0.18);
+}
+
+/* Estilos para el texto interno */
+.pie-pagina p {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 14px;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+/* Estilos específicos para el enlace de GitHub Pages */
+.pie-pagina a {
+    color: #ff9900;          /* Un color llamativo que contraste bien */
+    text-decoration: none;   /* Quita el subrayado por defecto */
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+/* Efecto al pasar el mouse por encima del enlace */
+.pie-pagina a:hover {
+    color: #ffbd2e;          /* Cambia a un tono más claro en hover (similar al botón de Mac) */
+    text-decoration: underline; /* Aparece el subrayado solo al pasar el cursor */
+}
