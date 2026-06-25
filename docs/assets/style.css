@@ -6,13 +6,16 @@
     backdrop-filter: blur(10px); 
     -webkit-backdrop-filter: blur(10px); 
     border-radius: 25px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.418);
+    border: 1px solid rgba(235, 140, 140, 0.18);
 }
 .nav-principal {
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
-    padding: 10px 20px; /* Espaciado interno */
+    padding: 10px 20px; 
+    
 }
 /* Invocando la clase de la lista para hacerla horizontal */
 .lista-menu {
@@ -24,7 +27,9 @@
     backdrop-filter: blur(10px); 
     -webkit-backdrop-filter: blur(10px); 
     border-radius: 25px;
-    width: 75%;
+    width: 50%;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.418);
+    border: 1px solid rgba(235, 140, 140, 0.18);
 }
 
 /* Invocando la clase de cada ítem para darles separación */
@@ -69,10 +74,13 @@ body {
     width: 75%;
     height: 50px;
     margin: 50px;
+    width: 40%;
     background-color: rgba(131, 42, 42, 0.2); /* Color de fondo opcional */
     backdrop-filter: blur(10px); 
     -webkit-backdrop-filter: blur(10px); 
     border-radius: 25px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.418);
+    border: 1px solid rgba(235, 140, 140, 0.18);
 }
 .contenedor-post-grande {
     display: flex;
@@ -81,10 +89,13 @@ body {
     padding: 20px;
     height: 175px;
     margin: 50px;
+    width: 40%;
     background-color: rgba(131, 42, 42, 0.2); /* Color de fondo opcional */
     backdrop-filter: blur(10px); 
     -webkit-backdrop-filter: blur(10px); 
     border-radius: 25px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.418);
+    border: 1px solid rgba(235, 140, 140, 0.18);
 }
 .contenedor-pdf {
     display: flex;
@@ -93,7 +104,9 @@ body {
     width: 90%;        /* Deja un 5% de margen a cada lado */
     max-width: 1200px; /* No permite que se descontrole en pantallas gigantes */
     height: 800px;     /* Altura amplia y cómoda */
-    margin: 0 auto; 
+    margin: 50px auto 50px auto;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.418);
+    border: 1px solid rgba(235, 140, 140, 0.18);
 }
 .contenedor-pdf embed,
 .contenedor-pdf iframe,
@@ -101,4 +114,21 @@ body {
     width: 100% !important;
     height: 100% !important;
     border: none;
+}
+.contenedor-infografia {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 1200px;    /* Evita que se estire demasiado y se pixele */
+    margin: 50px auto;
+    border-radius: 25px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.418);
+    border: 1px solid rgba(235, 140, 140, 0.18);
+    overflow: hidden;
+}
+.contenedor-infografia img {
+    width: 100%;
+    height: auto;        /* Se adapta perfectamente a lo alto de forma natural */
+    display: block;
 }
