@@ -1,0 +1,39 @@
+.main-header {
+    background-color: #333;
+    color: white;
+    display: flex;
+    justify-content: space-between; /* Separa el logo del menú */
+    align-items: center;            /* Centra los elementos verticalmente */
+    padding: 15px 30px;
+}
+
+/* Estilo del logo */
+.logo a {
+    color: white;
+    font-size: 24px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* Estilos del menú de navegación */
+.nav-menu ul {
+    list-style: none; /* Quita los puntos de la lista */
+    display: flex;    /* Pone los enlaces uno al lado del otro */
+    margin: 0;
+    padding: 0;
+}
+
+.nav-menu li {
+    margin-left: 20px; /* Separación entre cada enlace */
+}
+
+.nav-menu a {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+/* Efecto al pasar el mouse por encima */
+.nav-menu a:hover {
+    color: #ff9900;
+}
