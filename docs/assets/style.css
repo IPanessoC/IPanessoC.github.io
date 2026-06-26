@@ -152,7 +152,7 @@ body {
     padding: 20px;
     height: auto;
     margin: 50px;
-    width: 40%;
+    width: 80%;
     background-color: rgba(131, 42, 42, 0.2); /* Color de fondo opcional */
     backdrop-filter: blur(10px); 
     -webkit-backdrop-filter: blur(10px); 
@@ -206,23 +206,6 @@ body {
     width: 100% !important;
     height: 100% !important;
     border: none;
-}
-.contenedor-infografia {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    max-width: 1200px;    /* Evita que se estire demasiado y se pixele */
-    margin: 50px auto;
-    border-radius: 25px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.418);
-    border: 1px solid rgba(235, 140, 140, 0.18);
-    overflow: hidden;
-}
-.contenedor-infografia img {
-    width: 100%;
-    height: auto;        /* Se adapta perfectamente a lo alto de forma natural */
-    display: block;
 }
 .pie-pagina {
     clear: both;   
