@@ -116,7 +116,7 @@ document.addEventListener("DOMContentLoaded", () => {
     animate();
 
     // ==========================================
-    // 2. GSAP: ANIMACIÓN HERO & CARRUSEL DE SERVICIOS
+    // 2. GSAP: ANIMACIÓN HERO & CARRUSELES
     // ==========================================
     const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -140,11 +140,10 @@ document.addEventListener("DOMContentLoaded", () => {
         const prevBtn = module.querySelector('.prev-btn');
         const nextBtn = module.querySelector('.next-btn');
         const viewport = module.querySelector('.carousel-viewport');
-        const dotsContainer = module.querySelector('.carousel-dots');
+        const dotsContainer = module.querySelector('.carousel-dots') || module.querySelector('#carousel-dots');
         
         if (!track || slides.length === 0) return;
 
-        // ESTADO LOCAL: Cada carrusel tiene sus propias variables
         let currentIndex = 0;
         let isAnimating = false;
         let autoPlayInterval = null;
@@ -153,15 +152,16 @@ document.addEventListener("DOMContentLoaded", () => {
         // 1. Configuración inicial de tarjetas inactivas (Profundidad GSAP)
         if (!isReducedMotion) {
             slides.forEach((slide, i) => {
-                if (i !== 0) {
-                    gsap.set(slide.querySelector('.service-card-content'), { scale: 0.85, opacity: 0.4 });
+                const card = slide.querySelector('.service-card-content');
+                if (card && i !== 0) {
+                    gsap.set(card, { scale: 0.85, opacity: 0.4 });
                 }
             });
         }
 
         // 2. Generación dinámica de Dots
         if (dotsContainer) {
-            dotsContainer.innerHTML = ''; // Limpiar por si acaso
+            dotsContainer.innerHTML = ''; 
             slides.forEach((_, i) => {
                 const dot = document.createElement('button');
                 dot.classList.add('dot');
@@ -190,7 +190,6 @@ document.addEventListener("DOMContentLoaded", () => {
             if (isAnimating) return;
             isAnimating = true;
 
-            // Lógica circular
             if (index < 0) {
                 currentIndex = slides.length - 1;
             } else if (index >= slides.length) {
@@ -201,7 +200,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             updateDots();
 
-            // Desplazamiento del track (-100% de su ancho real por índice)
+            // Desplazamiento porcentual exacto por slide
             const targetXPercent = -100 * currentIndex;
 
             gsap.to(track, {
@@ -215,6 +214,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (!isReducedMotion) {
                 slides.forEach((slide, i) => {
                     const card = slide.querySelector('.service-card-content');
+                    if (!card) return;
                     if (i === currentIndex) {
                         gsap.to(card, { scale: 1, opacity: 1, duration: 0.8, ease: "power3.out", delay: 0.1 });
                     } else {
@@ -261,7 +261,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (e.key === 'ArrowLeft') { prevSlide(); resetAutoPlay(); }
             });
 
-            // Swipe en móviles
+            // Swipe en dispositivos táctiles
             let touchStartX = 0;
             let touchEndX = 0;
 
@@ -281,8 +281,8 @@ document.addEventListener("DOMContentLoaded", () => {
         startAutoPlay();
     }
 
-    // Se inician todos los carruseles que existan en la página
-    const carousels = document.querySelectorAll('.carousel-module');
+    // Inicializamos tanto los elementos con .carousel-module como la sección de servicios directa si aplica
+    const carousels = document.querySelectorAll('.carousel-module, #services');
     carousels.forEach(carousel => {
         initCarousel(carousel);
     });
