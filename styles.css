@@ -146,9 +146,11 @@ p { color: var(--text-muted); margin-bottom: var(--spacing-md); }
     border: 1px solid rgba(168, 85, 247, 0.15);
     overflow: hidden;
     position: relative;
-    display: flex;
+    display: block;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
+    text-decoration: none;
 }
 
 .cert-img {
@@ -157,6 +159,64 @@ p { color: var(--text-muted); margin-bottom: var(--spacing-md); }
     /* CONTAIN: Asegura que todo el texto/firmas del certificado se lea sin recortarse */
     object-fit: contain; 
     filter: drop-shadow(0 4px 10px rgba(0,0,0,0.5));
+    transition: filter 0.5s ease, transform 0.5s ease;
+}
+
+.cert-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    
+    /* Estética coherente con el portafolio */
+    background: rgba(9, 9, 14, 0.90);
+    backdrop-filter: blur(4px);
+    border-top: 1px solid var(--accent-primary);
+    box-shadow: 0 -5px 25px rgba(168, 85, 247, 0.3);
+    
+    padding: 1.25rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    /* Lo escondemos desplazándolo el 100% de su altura hacia abajo */
+    transform: translateY(100%);
+    
+    /* Easing con un ligero rebote elástico que ya usamos en los botones sociales */
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.cert-overlay p {
+    color: var(--text-main);
+    font-size: 0.85rem;
+    font-weight: 600;
+    line-height: 1.3;
+    margin: 0;
+    text-align: center;
+    /* Resplandor sutil en el texto para que resalte */
+    text-shadow: 0 0 8px rgba(168, 85, 247, 0.6); 
+}
+
+/* 
+   ESTADOS HOVER Y ACCESIBILIDAD (FOCUS)
+*/
+/* 1. Difuminamos y oscurecemos la imagen un poco */
+.cert-image-wrapper:hover .cert-img,
+.cert-image-wrapper:focus-visible .cert-img {
+    filter: blur(6px) brightness(0.6);
+    transform: scale(1.03); /* Efecto parallax mínimo */
+}
+
+/* 2. Deslizamos el overlay hacia su posición original */
+.cert-image-wrapper:hover .cert-overlay,
+.cert-image-wrapper:focus-visible .cert-overlay {
+    transform: translateY(0);
+}
+
+/* 3. Indicador visual claro para navegación por teclado */
+.cert-image-wrapper:focus-visible {
+    outline: 2px solid var(--accent-primary);
+    outline-offset: 4px;
 }
 
 /* Tipografía de los certificados */
