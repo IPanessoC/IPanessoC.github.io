@@ -116,11 +116,10 @@ document.addEventListener("DOMContentLoaded", () => {
     animate();
 
     // ==========================================
-    // 2. GSAP: ANIMACIÓN HERO & CARRUSELES
+    // 2. GSAP: ANIMACIÓN HERO & CONFIG GLOBAL
     // ==========================================
     const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    // Animación de entrada Hero
     if (!isReducedMotion) {
         gsap.timeline()
             .from(".tagline", { y: 20, opacity: 0, duration: 0.8, ease: "power3.out", delay: 0.2 })
@@ -131,7 +130,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ==========================================
-    // LÓGICA DE CARRUSELES MULTIPLES (FACTORY)
+    // 3. LÓGICA DE CARRUSELES MULTIPLES (3D Flip & Slide)
     // ==========================================
     
     function initCarousel(module) {
@@ -142,24 +141,67 @@ document.addEventListener("DOMContentLoaded", () => {
         const viewport = module.querySelector('.carousel-viewport');
         const dotsContainer = module.querySelector('.carousel-dots') || module.querySelector('#carousel-dots');
         
-        if (!track || slides.length === 0) return;
+        const numSlides = slides.length;
+        if (!track || numSlides === 0) return;
 
         let currentIndex = 0;
         let isAnimating = false;
         let autoPlayInterval = null;
-        const delay = 4000;
+        const delay = 4500;
+        
+        // 1. Setup Inicial: Configuración del espacio 3D
+        function setupLayout() {
+            if (viewport) {
+                // Configuramos la cámara (perspective) para la profundidad Z
+                gsap.set(viewport, { overflow: "hidden", perspective: 1200 }); 
+            }
 
-        // 1. Configuración inicial de tarjetas inactivas (Profundidad GSAP)
-        if (!isReducedMotion) {
+            const slideHeight = slides[0].offsetHeight || 440;
+            gsap.set(track, { height: slideHeight, position: "relative" });
+
             slides.forEach((slide, i) => {
+                gsap.set(slide, { clearProps: "transform,rotationY,z" });
+
+                // Cambiamos 'scale' por 'z' para profundidad 3D real
+                gsap.set(slide, {
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    width: "100%",
+                    opacity: i === 0 ? 1 : 0,           
+                    xPercent: i === 0 ? 0 : 100,        
+                    rotationY: i === 0 ? 0 : 45, 
+                    z: i === 0 ? 0 : -400, // Profundidad real
+                    zIndex: i === 0 ? 2 : 1, // La activa va al frente         
+                    pointerEvents: i === 0 ? "auto" : "none" 
+                });
+                
                 const card = slide.querySelector('.service-card-content');
-                if (card && i !== 0) {
-                    gsap.set(card, { scale: 0.85, opacity: 0.4 });
+                if (card) gsap.set(card, { clearProps: "scale,opacity" });
+            });
+
+            track.classList.add('is-ready');
+        }
+
+        // Recalcular la altura dinámica
+        window.addEventListener('resize', () => {
+            clearTimeout(module.resizeCarouselTimeout);
+            module.resizeCarouselTimeout = setTimeout(() => {
+                if (slides[currentIndex]) {
+                    gsap.to(track, { height: slides[currentIndex].offsetHeight, duration: 0.3 });
                 }
+            }, 200);
+        });
+
+        // 2. Dots Interactivos
+        function updateDots(index) {
+            if (!dotsContainer) return;
+            const dots = dotsContainer.querySelectorAll('.dot');
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === index);
             });
         }
 
-        // 2. Generación dinámica de Dots
         if (dotsContainer) {
             dotsContainer.innerHTML = ''; 
             slides.forEach((_, i) => {
@@ -169,7 +211,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 dot.setAttribute('aria-label', `Ir a diapositiva ${i + 1}`);
                 dot.addEventListener('click', () => {
                     if (currentIndex !== i) {
-                        goToSlide(i);
+                        goToSlide(i, i > currentIndex ? 1 : -1);
                         resetAutoPlay();
                     }
                 });
@@ -177,57 +219,60 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         }
 
-        function updateDots() {
-            if (!dotsContainer) return;
-            const dots = dotsContainer.querySelectorAll('.dot');
-            dots.forEach((dot, i) => {
-                dot.classList.toggle('active', i === currentIndex);
-            });
-        }
-
-        // 3. Función principal de animación
-        function goToSlide(index) {
-            if (isAnimating) return;
+        // 3. Animación Secuencial con Rotación 3D Verdadera
+        function goToSlide(targetIndex, direction) {
+            if (isAnimating || targetIndex === currentIndex) return;
             isAnimating = true;
 
-            if (index < 0) {
-                currentIndex = slides.length - 1;
-            } else if (index >= slides.length) {
-                currentIndex = 0;
-            } else {
-                currentIndex = index;
+            const currentSlide = slides[currentIndex];
+            const nextSlide = slides[targetIndex];
+            updateDots(targetIndex);
+
+            if (isReducedMotion) {
+                gsap.set(currentSlide, { opacity: 0, pointerEvents: "none" });
+                gsap.set(nextSlide, { opacity: 1, pointerEvents: "auto", xPercent: 0, rotationY: 0, z: 0 });
+                currentIndex = targetIndex;
+                isAnimating = false;
+                return;
             }
 
-            updateDots();
+            // Gestionamos las capas para que la nueva tarjeta pase por delante
+            gsap.set(currentSlide, { zIndex: 1 });
+            gsap.set(nextSlide, { zIndex: 2 });
 
-            // Desplazamiento porcentual exacto por slide
-            const targetXPercent = -100 * currentIndex;
-
-            gsap.to(track, {
-                xPercent: targetXPercent,
-                duration: isReducedMotion ? 0 : 0.8,
-                ease: "power3.inOut",
-                onComplete: () => { isAnimating = false; }
+            const tl = gsap.timeline({
+                onComplete: () => {
+                    gsap.set(currentSlide, { pointerEvents: "none" });
+                    gsap.set(nextSlide, { pointerEvents: "auto" });
+                    currentIndex = targetIndex;
+                    isAnimating = false;
+                }
             });
 
-            // Transición de profundidad para las tarjetas
-            if (!isReducedMotion) {
-                slides.forEach((slide, i) => {
-                    const card = slide.querySelector('.service-card-content');
-                    if (!card) return;
-                    if (i === currentIndex) {
-                        gsap.to(card, { scale: 1, opacity: 1, duration: 0.8, ease: "power3.out", delay: 0.1 });
-                    } else {
-                        gsap.to(card, { scale: 0.85, opacity: 0.4, duration: 0.8, ease: "power3.out" });
-                    }
-                });
-            }
+            // SALIDA: La tarjeta actual se va al fondo (eje Z negativo) y rota
+            tl.to(currentSlide, {
+                xPercent: -60 * direction, 
+                rotationY: -55 * direction, 
+                z: -400, 
+                opacity: 0,
+                duration: 0.9,
+                ease: "power3.inOut"
+            }, 0); 
+
+            // ENTRADA: La nueva tarjeta entra desde el fondo (z: -400) hacia el frente (z: 0)
+            tl.fromTo(nextSlide, 
+                { xPercent: 60 * direction, rotationY: 55 * direction, z: -400, opacity: 0 },
+                { xPercent: 0, rotationY: 0, z: 0, opacity: 1, duration: 0.9, ease: "power3.inOut" },
+                0 
+            );
+            
+            tl.to(track, { height: nextSlide.offsetHeight, duration: 0.9, ease: "power3.inOut" }, 0);
         }
 
-        function nextSlide() { goToSlide(currentIndex + 1); }
-        function prevSlide() { goToSlide(currentIndex - 1); }
+        function nextSlide() { goToSlide((currentIndex + 1) % numSlides, 1); }
+        function prevSlide() { goToSlide((currentIndex - 1 + numSlides) % numSlides, -1); }
 
-        // 4. Autoplay y Eventos
+        // 4. Autoplay Inteligente
         function startAutoPlay() {
             if (autoPlayInterval || isReducedMotion) return;
             autoPlayInterval = setInterval(nextSlide, delay);
@@ -261,27 +306,25 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (e.key === 'ArrowLeft') { prevSlide(); resetAutoPlay(); }
             });
 
-            // Swipe en dispositivos táctiles
+            // Swipe mejorado
             let touchStartX = 0;
-            let touchEndX = 0;
-
             viewport.addEventListener('touchstart', (e) => {
                 touchStartX = e.changedTouches[0].screenX;
                 stopAutoPlay();
             }, { passive: true });
 
             viewport.addEventListener('touchend', (e) => {
-                touchEndX = e.changedTouches[0].screenX;
-                if (touchStartX - touchEndX > 40) nextSlide();
-                else if (touchEndX - touchStartX > 40) prevSlide();
+                const touchEndX = e.changedTouches[0].screenX;
+                if (touchStartX - touchEndX > 50) nextSlide();
+                else if (touchEndX - touchStartX > 50) prevSlide();
                 startAutoPlay();
             }, { passive: true });
         }
 
+        setupLayout();
         startAutoPlay();
     }
 
-    // Inicializamos tanto los elementos con .carousel-module como la sección de servicios directa si aplica
     const carousels = document.querySelectorAll('.carousel-module, #services');
     carousels.forEach(carousel => {
         initCarousel(carousel);

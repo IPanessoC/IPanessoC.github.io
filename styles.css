@@ -307,9 +307,11 @@ p { color: var(--text-muted); margin-bottom: var(--spacing-md); }
 .carousel-viewport {
     width: 100%;
     max-width: 720px;
-    overflow: hidden;
+    overflow: visible;
     border-radius: var(--border-radius);
     outline: none;
+    perspective: 1200px;
+    perspective-origin: center center;
 }
 
 .carousel-viewport:focus-visible {
@@ -319,7 +321,9 @@ p { color: var(--text-muted); margin-bottom: var(--spacing-md); }
 .carousel-track {
     display: flex;
     width: 100%;
-    will-change: transform;
+    position: relative;
+    transform-style: preserve-3d;
+    will-change: transform, height;
 }
 
 .carousel-slide {
@@ -328,6 +332,9 @@ p { color: var(--text-muted); margin-bottom: var(--spacing-md); }
     justify-content: center;
     align-items: stretch;
     padding: 0.5rem 0.75rem;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    will-change: transform, opacity;
 }
 
 .service-card-content {
@@ -652,4 +659,24 @@ p { color: var(--text-muted); margin-bottom: var(--spacing-md); }
 }
 .social-bubble.whatsapp:hover::after { 
     border-top-color: #25D366; 
+}
+/* =========================================
+   PREVENCIÓN DE FOUC (Parpadeo de carga)
+   ========================================= */
+.carousel-slide {
+    /* Nos aseguramos de que no sean interactivas antes de que cargue GSAP */
+    visibility: hidden;
+    opacity: 0;
+}
+
+/* Solo mostramos la primera tarjeta por defecto mientras JS carga */
+.carousel-slide:first-child {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Clase que GSAP añadirá cuando esté listo para tomar el control */
+.carousel-track.is-ready .carousel-slide {
+    visibility: visible;
+    /* La opacidad ahora será controlada 100% por GSAP */
 }
