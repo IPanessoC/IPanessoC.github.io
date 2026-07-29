@@ -1,0 +1,543 @@
+/* Variables de CSS - Tema Oscuro Profundo (Cyberpunk Morado/Rosado) */
+:root {
+    --bg-main: #030305;
+    --bg-alt: #09090E;
+    --text-main: #F3F4F6;
+    --text-muted: #9CA3AF;
+    
+    --accent-primary: #A855F7;   /* Púrpura eléctrico */
+    --accent-secondary: #EC4899; /* Rosa neón */
+    
+    --font-sans: system-ui, -apple-system, sans-serif;
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 2rem;
+    --spacing-xl: 4rem;
+    --border-radius: 16px;
+
+    /* Dimensiones de las tarjetas */
+    --card-min-height: 440px; 
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-sans);
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+/* Canvas de Fondo Global Fijo */
+#cyber-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1; 
+    pointer-events: none; 
+    background: var(--bg-main);
+}
+
+/* Tipografía y Textos */
+h1, h2, h3 { line-height: 1.2; margin-bottom: var(--spacing-md); }
+h1 span { color: var(--accent-primary); text-shadow: 0 0 20px rgba(168, 85, 247, 0.4); }
+p { color: var(--text-muted); margin-bottom: var(--spacing-md); }
+
+/* Navegación */
+.header {
+    position: fixed;
+    top: 0; width: 100%;
+    background: rgba(3, 3, 5, 0.85);
+    backdrop-filter: blur(12px);
+    z-index: 100;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-md) var(--spacing-lg);
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.logo { font-size: 1.5rem; font-weight: bold; color: var(--text-main); text-decoration: none; }
+.logo span { color: var(--accent-secondary); text-shadow: 0 0 15px rgba(236, 72, 153, 0.4); }
+
+.nav-links { display: flex; gap: var(--spacing-md); list-style: none; }
+.nav-links a { color: var(--text-main); text-decoration: none; font-weight: 500; transition: color 0.3s; }
+.nav-links a:hover { color: var(--accent-primary); }
+
+/* Secciones Generales */
+.section { 
+    padding: var(--spacing-xl) var(--spacing-lg); 
+    background: rgba(3, 3, 5, 0.4);
+    backdrop-filter: blur(2px);
+}
+.container { max-width: 1200px; margin: 0 auto; }
+
+.section-title { font-size: 2.2rem; text-align: center; margin-bottom: var(--spacing-xl); position: relative; }
+.section-title::after {
+    content: ''; display: block; width: 60px; height: 3px;
+    background: var(--accent-primary); margin: 10px auto 0; border-radius: 2px;
+    box-shadow: 0 0 10px var(--accent-primary);
+}
+
+/* Hero Section */
+.hero-section {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: var(--spacing-lg);
+}
+
+.hero-content {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.tagline { color: var(--accent-secondary); text-transform: uppercase; letter-spacing: 2px; font-size: 0.875rem; font-weight: 600; text-shadow: 0 0 10px rgba(236, 72, 153, 0.3); }
+.hero-description { font-size: 1.125rem; max-width: 600px; margin: 0 auto var(--spacing-lg); }
+
+/* Botones */
+.btn {
+    display: inline-block; padding: 0.75rem 1.5rem; border-radius: var(--border-radius);
+    text-decoration: none; font-weight: 600; cursor: pointer; border: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.btn-primary { background-color: var(--accent-primary); color: #fff; box-shadow: 0 0 15px rgba(168, 85, 247, 0.3); }
+.btn-primary:hover { box-shadow: 0 0 25px rgba(168, 85, 247, 0.6); transform: translateY(-2px); }
+.btn-secondary { background-color: transparent; color: var(--text-main); border: 1px solid var(--accent-secondary); }
+.btn-secondary:hover { background-color: rgba(236, 72, 153, 0.1); transform: translateY(-2px); }
+.cta-group { display: flex; gap: 1rem; justify-content: center; }
+
+.grid-2-cols { display: grid; grid-template-columns: 1fr; gap: var(--spacing-lg); }
+@media (min-width: 768px) { .grid-2-cols { grid-template-columns: 1fr 1fr; align-items: center; } }
+.placeholder-box { width: 100%; height: 300px; background: rgba(9, 9, 14, 0.8); border: 2px dashed rgba(168, 85, 247, 0.3); display: flex; align-items: center; justify-content: center; border-radius: var(--border-radius); color: var(--text-muted); }
+
+/* =========================================
+   CONTENEDOR DE IMAGEN Y COMPORTAMIENTO FLUIDO
+   ========================================= */
+
+.image-placeholder {
+    width: 100%;
+    /* Mantenemos una altura mínima para que no colapse antes de cargar la imagen */
+    min-height: 300px; 
+    /* Si quieres que la imagen ocupe exactamente la altura del texto de al lado en desktop, puedes usar height: 100% */
+    
+    border-radius: var(--border-radius); /* Mantiene la coherencia de tu UI */
+    
+    /* CRÍTICO: Esto recorta cualquier parte de la imagen que se salga de los bordes redondeados */
+    overflow: hidden; 
+    
+    position: relative;
+
+    border-radius: 50%;
+    
+    /* Un toque de integración con tu tema oscuro/cyberpunk */
+    border: 1px solid rgba(168, 85, 247, 0.2); 
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4), inset 0 0 20px rgba(168, 85, 247, 0.05);
+}
+
+.profile-image {
+    width: 100%;
+    height: 100%;
+    
+    /* LA MAGIA: Asegura que la imagen llene el contenedor sin deformarse, recortando los bordes si es necesario */
+    object-fit: cover; 
+    
+    /* Asegura que el centro de la imagen (usualmente tu rostro) sea el punto de anclaje al recortar */
+    object-position: center; 
+    
+    /* Elimina el pequeño espacio fantasma que los navegadores dejan debajo de las imágenes por defecto */
+    display: block; 
+    
+    /* Preparamos la imagen para una transición suave de hardware (GPU) */
+    transition: transform 0.6s cubic-bezier(0.33, 1, 0.68, 1);
+    
+    /* Opcional: Si tu foto es muy brillante, puedes bajarle un poco el brillo en estado normal para que encaje con el modo oscuro */
+    filter: brightness(0.9) contrast(1.1);
+}
+
+/* Efecto Hover: Pequeño zoom (Scale) para dar profundidad */
+.image-placeholder:hover .profile-image {
+    transform: scale(1.05);
+    filter: brightness(1) contrast(1.1); /* Ilumina la imagen al pasar el mouse */
+}
+
+/* =========================================
+   CARRUSEL DE SERVICIOS
+   ========================================= */
+.services-carousel-section {
+    position: relative;
+    padding: var(--spacing-xl) 0;
+}
+
+.carousel-wrapper {
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 4rem;
+}
+
+.carousel-viewport {
+    width: 100%;
+    max-width: 720px;
+    overflow: hidden;
+    border-radius: var(--border-radius);
+    outline: none;
+}
+
+.carousel-viewport:focus-visible {
+    box-shadow: 0 0 0 2px var(--accent-primary);
+}
+
+.carousel-track {
+    display: flex;
+    width: 100%;
+    will-change: transform;
+}
+
+.carousel-slide {
+    flex: 0 0 100%;
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    padding: 0.5rem 0.75rem;
+}
+
+.service-card-content {
+    background: linear-gradient(145deg, rgba(15, 15, 24, 0.9), rgba(8, 8, 14, 0.95));
+    border: 1px solid rgba(168, 85, 247, 0.25);
+    border-top: 1px solid rgba(236, 72, 153, 0.4);
+    padding: 2.5rem 2rem;
+    border-radius: var(--border-radius);
+    width: 100%;
+    min-height: var(--card-min-height); /* ALTURA MAYOR CONFIGURADA */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), inset 0 0 20px rgba(168, 85, 247, 0.05);
+    transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+}
+
+.service-card-content:hover {
+    transform: translateY(-4px);
+    border-color: rgba(236, 72, 153, 0.6);
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.8), 0 0 25px rgba(168, 85, 247, 0.25);
+}
+
+/* Elementos gráficos dentro de la tarjeta */
+.card-badge {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--accent-secondary);
+    background: rgba(236, 72, 153, 0.1);
+    padding: 0.35rem 0.85rem;
+    border-radius: 20px;
+    border: 1px solid rgba(236, 72, 153, 0.2);
+}
+
+.card-icon {
+    margin: 1.25rem 0;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: rgba(168, 85, 247, 0.12);
+    border: 1px solid rgba(168, 85, 247, 0.3);
+    color: var(--accent-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 15px rgba(168, 85, 247, 0.2);
+}
+
+.service-card-content h3 {
+    color: var(--text-main);
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+}
+
+.service-card-content p {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--text-muted);
+    max-width: 520px;
+    margin-bottom: 1.5rem;
+}
+
+.card-link {
+    color: var(--accent-primary);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.card-link:hover {
+    color: var(--accent-secondary);
+    transform: translateX(3px);
+}
+
+/* Controles (Flechas) */
+.carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(9, 9, 14, 0.9);
+    border: 1px solid var(--accent-primary);
+    color: var(--accent-primary);
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 0 15px rgba(168, 85, 247, 0.15);
+}
+
+.carousel-btn:hover {
+    background: var(--accent-primary);
+    color: #fff;
+    box-shadow: 0 0 25px rgba(168, 85, 247, 0.6);
+    transform: translateY(-50%) scale(1.1);
+}
+
+.prev-btn { left: 2%; }
+.next-btn { right: 2%; }
+
+/* Indicadores de Puntos (Dots) */
+.carousel-dots {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 1.75rem;
+}
+
+.dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.dot:hover {
+    background: rgba(168, 85, 247, 0.5);
+}
+
+.dot.active {
+    background: var(--accent-primary);
+    width: 28px;
+    border-radius: 10px;
+    box-shadow: 0 0 12px var(--accent-primary);
+}
+
+@media (max-width: 768px) {
+    :root {
+        --card-min-height: 380px;
+    }
+    .carousel-wrapper { padding: 0 1rem; }
+    .prev-btn { left: 0.5rem; width: 42px; height: 42px; }
+    .next-btn { right: 0.5rem; width: 42px; height: 42px; }
+    .service-card-content { padding: 1.75rem 1.25rem; }
+}
+
+.mt-2 { margin-top: var(--spacing-lg); }
+.text-center { text-align: center; }
+.footer { text-align: center; padding: var(--spacing-md); background: var(--bg-main); border-top: 1px solid rgba(255,255,255,0.05); color: var(--text-muted); font-size: 0.875rem; position: relative; z-index: 2; }
+
+/* =========================================
+   BURBUJAS SOCIALES DE CONTACTO
+   ========================================= */
+.social-bubbles {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    align-items: center;
+}
+
+.social-bubble {
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    background: rgba(9, 9, 14, 0.9);
+    border: 1px solid rgba(168, 85, 247, 0.3); /* Morado base sutil */
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-main);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Easing con un pequeño rebote */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.social-bubble svg {
+    width: 28px;
+    height: 28px;
+    transition: transform 0.3s ease;
+}
+
+/* Efectos Hover por Marca */
+.social-bubble:hover {
+    transform: translateY(-8px);
+}
+
+.social-bubble:hover svg {
+    transform: scale(1.15);
+}
+
+/* Colores específicos que reemplazan el borde y generan brillo */
+.social-bubble.gmail:hover {
+    border-color: #EA4335;
+    color: #EA4335;
+    box-shadow: 0 10px 25px rgba(234, 67, 53, 0.4), inset 0 0 10px rgba(234, 67, 53, 0.2);
+}
+
+.social-bubble.github:hover {
+    border-color: #ffffff;
+    color: #ffffff;
+    box-shadow: 0 10px 25px rgba(255, 255, 255, 0.4), inset 0 0 10px rgba(255, 255, 255, 0.2);
+}
+
+.social-bubble.instagram:hover {
+    border-color: #E1306C;
+    color: #E1306C;
+    box-shadow: 0 10px 25px rgba(225, 48, 108, 0.4), inset 0 0 10px rgba(225, 48, 108, 0.2);
+}
+
+.social-bubble.whatsapp:hover {
+    border-color: #25D366;
+    color: #25D366;
+    box-shadow: 0 10px 25px rgba(37, 211, 102, 0.4), inset 0 0 10px rgba(37, 211, 102, 0.2);
+}
+
+/* Responsivo para móviles */
+@media (max-width: 768px) {
+    .social-bubbles { gap: 1rem; }
+    .social-bubble { width: 55px; height: 55px; }
+    .social-bubble svg { width: 24px; height: 24px; }
+}
+
+/* =========================================
+   TOOLTIPS DE LAS BURBUJAS SOCIALES
+   ========================================= */
+
+/* 1. La caja de texto del Tooltip */
+.social-bubble::before {
+    content: attr(data-tooltip); /* Toma el texto mágicamente del HTML */
+    position: absolute;
+    bottom: 130%; /* Lo posiciona arriba de la burbuja */
+    left: 50%;
+    
+    /* Centrado horizontal y desplazado un poco hacia abajo para la animación de entrada */
+    transform: translateX(-50%) translateY(10px); 
+    
+    background: rgba(9, 9, 14, 0.95);
+    border: 1px solid rgba(168, 85, 247, 0.3); /* Morado base */
+    color: var(--text-main);
+    padding: 0.4rem 0.8rem;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    white-space: nowrap; /* Evita que el texto se parta en dos líneas */
+    
+    /* Estado inicial invisible */
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none; /* CRÍTICO: Evita que el tooltip interfiera con el clic del mouse */
+    z-index: 20;
+    
+    /* Animación fluida con rebote */
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    backdrop-filter: blur(4px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+}
+
+/* 2. Pequeña flecha (triángulo) apuntando hacia abajo */
+.social-bubble::after {
+    content: '';
+    position: absolute;
+    bottom: 112%; /* Justo debajo de la caja de texto */
+    left: 50%;
+    transform: translateX(-50%) translateY(10px);
+    
+    /* Truco CSS para hacer un triángulo */
+    border-width: 6px;
+    border-style: solid;
+    border-color: rgba(168, 85, 247, 0.3) transparent transparent transparent;
+    
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    z-index: 20;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* 3. El comportamiento al hacer Hover (Aparecen y suben a su posición final) */
+.social-bubble:hover::before,
+.social-bubble:hover::after {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+}
+
+/* =========================================
+   COLORES DE MARCA PARA EL TOOLTIP
+   ========================================= */
+/* El borde y el resplandor del tooltip coinciden con la marca */
+
+.social-bubble.gmail:hover::before { 
+    border-color: #EA4335; 
+    box-shadow: 0 0 15px rgba(234, 67, 53, 0.2); 
+}
+.social-bubble.gmail:hover::after { 
+    border-top-color: #EA4335; 
+}
+
+.social-bubble.github:hover::before { 
+    border-color: #ffffff; 
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.2); 
+}
+.social-bubble.github:hover::after { 
+    border-top-color: #ffffff; 
+}
+
+.social-bubble.instagram:hover::before { 
+    border-color: #E1306C; 
+    box-shadow: 0 0 15px rgba(225, 48, 108, 0.2); 
+}
+.social-bubble.instagram:hover::after { 
+    border-top-color: #E1306C; 
+}
+
+.social-bubble.whatsapp:hover::before { 
+    border-color: #25D366; 
+    box-shadow: 0 0 15px rgba(37, 211, 102, 0.2); 
+}
+.social-bubble.whatsapp:hover::after { 
+    border-top-color: #25D366; 
+}
