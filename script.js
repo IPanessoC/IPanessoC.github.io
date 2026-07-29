@@ -402,6 +402,83 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         };
 
+        // 5. EVENTOS AVANZADOS: Touchpad, Drag y Tutorial
+        if (viewport) {
+            // Lógica del Tutorial (Solo si tienen cursor/mouse)
+            const isTouchDevice = window.matchMedia("(hover: none) and (pointer: coarse)").matches;
+            const tutorial = module.querySelector('#swipe-tutorial');
+            
+            if (!isTouchDevice && tutorial && !sessionStorage.getItem('tutorialSeen')) {
+                // Secuencia GSAP para mostrar y ocultar el tutorial
+                const tutTl = gsap.timeline();
+                tutTl.to(tutorial, { autoAlpha: 1, duration: 0.5, ease: "power2.out", delay: 1 })
+                     .to(tutorial.querySelector('.tutorial-content'), { y: 0, duration: 0.5, ease: "power2.out" }, "-=0.5")
+                     .to(tutorial, { autoAlpha: 0, duration: 0.5, ease: "power2.in", delay: 3 })
+                     .call(() => sessionStorage.setItem('tutorialSeen', 'true'));
+            }
+
+            // A) Trackpad: Deslizamiento con dos dedos (Evento Wheel)
+            let isWheelCooldown = false;
+            viewport.addEventListener('wheel', (e) => {
+                if (isWheelCooldown || isAnimating) return;
+
+                if (Math.abs(e.deltaX) > Math.abs(e.deltaY) && Math.abs(e.deltaX) > 30) {
+                    e.preventDefault();
+                    isWheelCooldown = true;
+                    
+                    if (e.deltaX > 0) nextSlide();
+                    else prevSlide();
+
+                    setTimeout(() => { isWheelCooldown = false; }, 1200); 
+                }
+            }, { passive: false });
+
+            // B) Mouse: Arrastrar con clic presionado (Drag)
+            let isDragging = false;
+            let startDragX = 0;
+
+            viewport.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                startDragX = e.clientX;
+                stopAutoPlay();
+            });
+
+            window.addEventListener('mouseup', () => {
+                isDragging = false;
+                startAutoPlay();
+            });
+
+            viewport.addEventListener('mousemove', (e) => {
+                if (!isDragging || isAnimating) return;
+                
+                const currentDragX = e.clientX;
+                const diff = startDragX - currentDragX;
+
+                if (Math.abs(diff) > 60) {
+                    isDragging = false;
+                    if (diff > 0) nextSlide();
+                    else prevSlide();
+                }
+            });
+        } // <--- 🛑 AQUÍ CIERRA CORRECTAMENTE EL BLOQUE "if (viewport)"
+
+        // Añadimos el listener a cada enlace del menú
+        navAnchors.forEach(anchor => {
+            anchor.addEventListener('click', handleLinkClick);
+        });
+
+        // Cleanup: Limpiamos absolutamente todo para evitar fugas de memoria
+        return () => {
+            tl.kill();
+            isMenuOpen = false;
+            menuToggle.classList.remove('is-active');
+            document.body.style.overflow = '';
+            menuToggle.removeEventListener('click', toggleMenu);
+            navAnchors.forEach(anchor => {
+                anchor.removeEventListener('click', handleLinkClick);
+            });
+        };
+
         // Añadimos el listener a cada enlace
         navAnchors.forEach(anchor => {
             anchor.addEventListener('click', handleLinkClick);

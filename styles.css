@@ -727,6 +727,55 @@ p { color: var(--text-muted); margin-bottom: var(--spacing-md); }
     }
 }
 
+/* Oculta las flechas si el dispositivo principal es táctil (celulares/tablets) */
+@media (hover: none) and (pointer: coarse) {
+    .prev-btn,
+    .next-btn {
+        display: none !important;
+    }
+}
+
+/* Cambiamos el cursor para indicar que el área se puede arrastrar en PC */
+.carousel-viewport {
+    cursor: grab;
+}
+.carousel-viewport:active {
+    cursor: grabbing;
+}
+
+.swipe-tutorial-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    background: rgba(10, 10, 15, 0.85);
+    backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--accent-primary, #A855F7);
+    pointer-events: none; /* Deja pasar los clics */
+    opacity: 0;
+    visibility: hidden;
+}
+
+.tutorial-content {
+    text-align: center;
+    transform: translateY(20px);
+}
+
+.tutorial-icon {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 1rem;
+    animation: swipeLeftRight 2s ease-in-out infinite;
+}
+
+@keyframes swipeLeftRight {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-15px); }
+    75% { transform: translateX(15px); }
+}
+
 /* =========================================
    PREVENCIÓN DE FOUC (Parpadeo de carga)
    ========================================= */
