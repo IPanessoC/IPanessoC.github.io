@@ -379,20 +379,44 @@ document.addEventListener("DOMContentLoaded", () => {
         // Escuchar el botón hamburguesa
         menuToggle.addEventListener('click', toggleMenu);
 
-        // Cerrar el menú si hacen clic en un enlace
-        links.forEach(link => {
-            link.addEventListener('click', () => {
-                if (isMenuOpen) toggleMenu();
-            });
+        // 4. Manejo del clic en los enlaces (Mejorado)
+        const navAnchors = document.querySelectorAll('.nav-links a'); // Seleccionamos la etiqueta <a> directamente
+
+        const handleLinkClick = (e) => {
+            if (!isMenuOpen) return; // Si el menú no está abierto, no hacemos nada
+            
+            e.preventDefault(); // 🚫 Bloqueamos el salto instantáneo nativo del navegador
+            
+            const targetId = e.currentTarget.getAttribute('href');
+            const targetSection = document.querySelector(targetId);
+
+            toggleMenu(); // Cambiamos el estado (isMenuOpen) a false, ícono a "=", y ejecutamos tl.reverse()
+
+            // Hacemos un scroll suave (Smooth Scroll) hacia la sección
+            if (targetSection) {
+                // Le damos un respiro de 150ms para que la animación de cierre de GSAP 
+                // inicie fluidamente antes de mover la cámara
+                setTimeout(() => {
+                    targetSection.scrollIntoView({ behavior: 'smooth' });
+                }, 150);
+            }
+        };
+
+        // Añadimos el listener a cada enlace
+        navAnchors.forEach(anchor => {
+            anchor.addEventListener('click', handleLinkClick);
         });
 
-        // Cleanup: Restablecemos estados si la pantalla se agranda
+        // Cleanup: Limpiamos absolutamente todo para evitar fugas de memoria si rotan la pantalla
         return () => {
             tl.kill();
             isMenuOpen = false;
             menuToggle.classList.remove('is-active');
             document.body.style.overflow = '';
             menuToggle.removeEventListener('click', toggleMenu);
+            navAnchors.forEach(anchor => {
+                anchor.removeEventListener('click', handleLinkClick);
+            });
         };
     });
 });
