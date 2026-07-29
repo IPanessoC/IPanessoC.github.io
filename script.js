@@ -329,4 +329,70 @@ document.addEventListener("DOMContentLoaded", () => {
     carousels.forEach(carousel => {
         initCarousel(carousel);
     });
+    // ==========================================
+    // MENÚ MÓVIL RESPONSIVO CON GSAP
+    // ==========================================
+    const menuToggle = document.querySelector('.mobile-menu-toggle');
+    const navLinks = document.querySelector('.nav-links');
+    const links = document.querySelectorAll('.nav-links li');
+    let isMenuOpen = false;
+
+    // 1. Configuramos matchMedia para aislar el comportamiento móvil
+    let mm = gsap.matchMedia();
+
+    mm.add("(max-width: 768px)", () => {
+        // 2. Creamos la línea de tiempo pausada
+        const tl = gsap.timeline({ paused: true });
+
+        // Animación del fondo (expansión radial)
+        tl.to(navLinks, {
+            autoAlpha: 1, // Maneja visibility y opacity simultáneamente
+            clipPath: "circle(150% at calc(100% - 40px) 40px)",
+            duration: 0.6,
+            ease: "power3.inOut"
+        })
+        // Animación en cascada de los enlaces (Stagger)
+        .from(links, {
+            y: 30,
+            opacity: 0,
+            duration: 0.4,
+            stagger: 0.1, // Retraso de 0.1s entre cada enlace
+            ease: "power2.out"
+        }, "-=0.3"); // Este "-=0.3" hace que empiece un poco antes de que termine el fondo
+
+        // 3. Manejo del clic
+        const toggleMenu = () => {
+            isMenuOpen = !isMenuOpen;
+            menuToggle.classList.toggle('is-active');
+            menuToggle.setAttribute('aria-expanded', isMenuOpen);
+            
+            if (isMenuOpen) {
+                tl.play();
+                // Bloqueamos el scroll del fondo cuando el menú está abierto
+                document.body.style.overflow = 'hidden'; 
+            } else {
+                tl.reverse();
+                document.body.style.overflow = '';
+            }
+        };
+
+        // Escuchar el botón hamburguesa
+        menuToggle.addEventListener('click', toggleMenu);
+
+        // Cerrar el menú si hacen clic en un enlace
+        links.forEach(link => {
+            link.addEventListener('click', () => {
+                if (isMenuOpen) toggleMenu();
+            });
+        });
+
+        // Cleanup: Restablecemos estados si la pantalla se agranda
+        return () => {
+            tl.kill();
+            isMenuOpen = false;
+            menuToggle.classList.remove('is-active');
+            document.body.style.overflow = '';
+            menuToggle.removeEventListener('click', toggleMenu);
+        };
+    });
 });
