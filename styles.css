@@ -126,6 +126,58 @@ p { color: var(--text-muted); margin-bottom: var(--spacing-md); }
 .placeholder-box { width: 100%; height: 300px; background: rgba(9, 9, 14, 0.8); border: 2px dashed rgba(168, 85, 247, 0.3); display: flex; align-items: center; justify-content: center; border-radius: var(--border-radius); color: var(--text-muted); }
 
 /* =========================================
+   TARJETAS DE CERTIFICACIONES
+   ========================================= */
+
+/* Modificamos el layout interno para los certificados */
+.cert-card {
+    padding: 1.5rem; /* Menos padding para darle espacio al certificado */
+    justify-content: flex-start;
+    gap: 1.5rem;
+}
+
+/* El contenedor del certificado */
+.cert-image-wrapper {
+    width: 100%;
+    /* Un aspect-ratio clásico de certificado apaisado (landscape) */
+    aspect-ratio: 4 / 3; 
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 8px;
+    border: 1px solid rgba(168, 85, 247, 0.15);
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cert-img {
+    width: 100%;
+    height: 100%;
+    /* CONTAIN: Asegura que todo el texto/firmas del certificado se lea sin recortarse */
+    object-fit: contain; 
+    filter: drop-shadow(0 4px 10px rgba(0,0,0,0.5));
+}
+
+/* Tipografía de los certificados */
+.cert-text h3 {
+    font-size: 1.4rem;
+    margin-bottom: 0.25rem;
+    color: var(--text-main);
+}
+
+.cert-text p {
+    font-size: 0.9rem;
+    color: var(--accent-secondary);
+    font-family: monospace; /* Le da un toque "tech" o de código */
+    margin-bottom: 0;
+}
+
+@media (max-width: 768px) {
+    .cert-image-wrapper { aspect-ratio: 1 / 1; /* Ajuste en móviles si es necesario */ }
+}
+
+/* =========================================
    CONTENEDOR DE IMAGEN Y COMPORTAMIENTO FLUIDO
    ========================================= */
 

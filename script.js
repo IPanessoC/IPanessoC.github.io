@@ -130,23 +130,38 @@ document.addEventListener("DOMContentLoaded", () => {
             .from(".cta-group", { y: 20, opacity: 0, duration: 0.8, ease: "power3.out" }, "-=0.6");
     }
 
-    // Lógica robusta del Carrusel
-    const track = document.querySelector('.carousel-track');
-    const slides = document.querySelectorAll('.carousel-slide');
-    const prevBtn = document.querySelector('.prev-btn');
-    const nextBtn = document.querySelector('.next-btn');
-    const viewport = document.querySelector('.carousel-viewport');
-    const dotsContainer = document.getElementById('carousel-dots');
+    // ==========================================
+    // LÓGICA DE CARRUSELES MULTIPLES (FACTORY)
+    // ==========================================
+    
+    function initCarousel(module) {
+        const track = module.querySelector('.carousel-track');
+        const slides = module.querySelectorAll('.carousel-slide');
+        const prevBtn = module.querySelector('.prev-btn');
+        const nextBtn = module.querySelector('.next-btn');
+        const viewport = module.querySelector('.carousel-viewport');
+        const dotsContainer = module.querySelector('.carousel-dots');
+        
+        if (!track || slides.length === 0) return;
 
-    if (track && slides.length > 0) {
+        // ESTADO LOCAL: Cada carrusel tiene sus propias variables
         let currentIndex = 0;
         let isAnimating = false;
         let autoPlayInterval = null;
         const delay = 4000;
 
-        // Generación dinámica de Dots
+        // 1. Configuración inicial de tarjetas inactivas (Profundidad GSAP)
+        if (!isReducedMotion) {
+            slides.forEach((slide, i) => {
+                if (i !== 0) {
+                    gsap.set(slide.querySelector('.service-card-content'), { scale: 0.85, opacity: 0.4 });
+                }
+            });
+        }
+
+        // 2. Generación dinámica de Dots
         if (dotsContainer) {
-            dotsContainer.innerHTML = '';
+            dotsContainer.innerHTML = ''; // Limpiar por si acaso
             slides.forEach((_, i) => {
                 const dot = document.createElement('button');
                 dot.classList.add('dot');
@@ -170,10 +185,12 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         }
 
+        // 3. Función principal de animación
         function goToSlide(index) {
             if (isAnimating) return;
             isAnimating = true;
 
+            // Lógica circular
             if (index < 0) {
                 currentIndex = slides.length - 1;
             } else if (index >= slides.length) {
@@ -184,7 +201,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             updateDots();
 
-            // Cálculo corregido para trasladar por fracción del track total
+            // Desplazamiento del track (-100% de su ancho real por índice)
             const targetXPercent = -100 * currentIndex;
 
             gsap.to(track, {
@@ -193,14 +210,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 ease: "power3.inOut",
                 onComplete: () => { isAnimating = false; }
             });
+
+            // Transición de profundidad para las tarjetas
             if (!isReducedMotion) {
                 slides.forEach((slide, i) => {
                     const card = slide.querySelector('.service-card-content');
                     if (i === currentIndex) {
-                        // Tarjeta activa: Escala original y opacidad completa
                         gsap.to(card, { scale: 1, opacity: 1, duration: 0.8, ease: "power3.out", delay: 0.1 });
                     } else {
-                        // Tarjetas inactivas: Se encogen y se difuminan ligeramente
                         gsap.to(card, { scale: 0.85, opacity: 0.4, duration: 0.8, ease: "power3.out" });
                     }
                 });
@@ -210,14 +227,7 @@ document.addEventListener("DOMContentLoaded", () => {
         function nextSlide() { goToSlide(currentIndex + 1); }
         function prevSlide() { goToSlide(currentIndex - 1); }
 
-        if (!isReducedMotion) {
-            slides.forEach((slide, i) => {
-                if (i !== currentIndex) {
-                    gsap.set(slide.querySelector('.service-card-content'), { scale: 0.85, opacity: 0.4 });
-                }
-            });
-        }
-
+        // 4. Autoplay y Eventos
         function startAutoPlay() {
             if (autoPlayInterval || isReducedMotion) return;
             autoPlayInterval = setInterval(nextSlide, delay);
@@ -235,13 +245,11 @@ document.addEventListener("DOMContentLoaded", () => {
             startAutoPlay();
         }
 
-        // Listeners de los botones
         if (nextBtn && prevBtn) {
             nextBtn.addEventListener('click', () => { nextSlide(); resetAutoPlay(); });
             prevBtn.addEventListener('click', () => { prevSlide(); resetAutoPlay(); });
         }
 
-        // Control por Pausa en Hover/Focus y Teclado
         if (viewport) {
             viewport.addEventListener('mouseenter', stopAutoPlay);
             viewport.addEventListener('mouseleave', startAutoPlay);
@@ -253,7 +261,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (e.key === 'ArrowLeft') { prevSlide(); resetAutoPlay(); }
             });
 
-            // Soporte Gestual (Swipe en móviles)
+            // Swipe en móviles
             let touchStartX = 0;
             let touchEndX = 0;
 
@@ -272,4 +280,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
         startAutoPlay();
     }
+
+    // Se inician todos los carruseles que existan en la página
+    const carousels = document.querySelectorAll('.carousel-module');
+    carousels.forEach(carousel => {
+        initCarousel(carousel);
+    });
 });
