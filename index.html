@@ -14,9 +14,9 @@
         <nav class="nav-container">
             <a href="#hero" class="logo"><span>I</span>Panesso<span>C</span></a>
             <ul class="nav-links">
-                <li><a href="#certificates">Certificados</a></li>
-                <li><a href="#about">Sobre Mí</a></li>
                 <li><a href="#services">Servicios</a></li>
+                <li><a href="#about">Sobre Mí</a></li>
+                <li><a href="#certificates">Certificados</a></li>
                 <li><a href="#contact">Contacto</a></li>
             </ul>
         </nav>
@@ -34,6 +34,112 @@
                 <div class="cta-group">
                     <a href="#services" class="btn btn-primary">Ver Servicios</a>
                     <a href="#contact" class="btn btn-secondary">Contactar</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- CARRUSEL DE SERVICIOS OPTIMIZADO -->
+        <section id="services" class="section services-carousel-section">
+            <div class="container">
+                <h2 class="section-title">Servicios</h2>
+            </div>
+            
+            <div class="carousel-wrapper">
+                <!-- Botón Anterior -->
+                <button class="carousel-btn prev-btn" aria-label="Servicio anterior">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
+                </button>
+
+                <!-- Área visible del carrusel -->
+                <div class="carousel-viewport" tabindex="0" aria-label="Carrusel de servicios">
+                    <div class="carousel-track">
+                        <!-- Tarjeta 1 -->
+                        <div class="carousel-slide">
+                            <article class="service-card-content">
+                                <div class="card-badge">01 // SEGURIDAD</div>
+                                <div class="card-icon">
+                                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                                </div>
+                                <h3>Asesoría en Ciberseguridad</h3>
+                                <p>Auditorías personales y corporativas básicas, concientización sobre phishing, y protección de identidad digital para usuarios y empleados.</p>
+                                <a href="#contact" class="card-link">Saber más &rarr;</a>
+                            </article>
+                        </div>
+                        <!-- Tarjeta 2 -->
+                        <div class="carousel-slide">
+                            <article class="service-card-content">
+                                <div class="card-badge">02 // DESARROLLO</div>
+                                <div class="card-icon">
+                                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                                </div>
+                                <h3>Desarrollo Web Front-End</h3>
+                                <p>Creación de sitios web modernos, responsivos y seguros utilizando las mejores prácticas de HTML, CSS y arquitecturas escalables.</p>
+                                <a href="#contact" class="card-link">Saber más &rarr;</a>
+                            </article>
+                        </div>
+                        <!-- Tarjeta 3 -->
+                        <div class="carousel-slide">
+                            <article class="service-card-content">
+                                <div class="card-badge">03 // AUDITORÍA</div>
+                                <div class="card-icon">
+                                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                                </div>
+                                <h3>Análisis de Vulnerabilidades</h3>
+                                <p>Evaluación de aplicaciones web para detectar fallos de seguridad comunes antes de que puedan ser explotados por atacantes.</p>
+                                <a href="#contact" class="card-link">Saber más &rarr;</a>
+                            </article>
+                        </div>
+                        <!-- Tarjeta 4 -->
+                        <div class="carousel-slide">
+                            <article class="service-card-content">
+                                <div class="card-badge">04 // INTELIGENCIA ARTIFICIAL</div>
+                                <div class="card-icon">
+                                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+                                        <rect x="9" y="9" width="6" height="6"></rect>
+                                        <line x1="9" y1="1" x2="9" y2="4"></line>
+                                        <line x1="15" y1="1" x2="15" y2="4"></line>
+                                        <line x1="9" y1="20" x2="9" y2="23"></line>
+                                        <line x1="15" y1="20" x2="15" y2="23"></line>
+                                        <line x1="20" y1="9" x2="23" y2="9"></line>
+                                        <line x1="20" y1="14" x2="23" y2="14"></line>
+                                        <line x1="1" y1="9" x2="4" y2="9"></line>
+                                        <line x1="1" y1="14" x2="4" y2="14"></line>
+                                    </svg>
+                                </div>
+                                <h3>Optimización con Inteligencia Artificial</h3>
+                                <p>Servicio de asistencia y consultoría (Prompter) para integrar herramientas de IA en tus flujos de trabajo diarios. Creación de prompts efectivos y automatización de tareas para multiplicar tu productividad.</p>
+                                <a href="#contact" class="card-link">Saber más &rarr;</a>
+                            </article>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Botón Siguiente -->
+                <button class="carousel-btn next-btn" aria-label="Servicio siguiente">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Indicadores (Dots) de navegación -->
+            <div class="carousel-dots" id="carousel-dots" aria-label="Indicadores de diapositiva"></div>
+        </section>
+
+        <section id="about" class="section">
+            <div class="container">
+                <h2 class="section-title">Sobre Mí</h2>
+                <div class="grid-2-cols">
+                    <div class="text-content">
+                        <p>Soy un apasionado de la tecnología con formación en análisis de software y especialización en ciberseguridad. Mi objetivo es cerrar la brecha entre el desarrollo moderno y las prácticas de seguridad accesibles.</p>
+                        <p>Analizo vulnerabilidades y construyo arquitecturas web robustas para que la web sea un entorno confiable.</p>
+                    </div>
+                    <div class="image-placeholder">
+                        <img src="assets/fotoProfesional2.jpg" alt="Foto-Profesional" class="profile-image">
+                    </div>
                 </div>
             </div>
         </section>
@@ -155,112 +261,6 @@
                 <!-- Puntos dinámicos -->
                 <div class="carousel-dots" aria-label="Indicadores de diapositiva"></div>
             </div>
-        </section>
-
-        <section id="about" class="section">
-            <div class="container">
-                <h2 class="section-title">Sobre Mí</h2>
-                <div class="grid-2-cols">
-                    <div class="text-content">
-                        <p>Soy un apasionado de la tecnología con formación en análisis de software y especialización en ciberseguridad. Mi objetivo es cerrar la brecha entre el desarrollo moderno y las prácticas de seguridad accesibles.</p>
-                        <p>Analizo vulnerabilidades y construyo arquitecturas web robustas para que la web sea un entorno confiable.</p>
-                    </div>
-                    <div class="image-placeholder">
-                        <img src="assets/fotoProfesional2.jpg" alt="Foto-Profesional" class="profile-image">
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- CARRUSEL DE SERVICIOS OPTIMIZADO -->
-        <section id="services" class="section services-carousel-section">
-            <div class="container">
-                <h2 class="section-title">Servicios</h2>
-            </div>
-            
-            <div class="carousel-wrapper">
-                <!-- Botón Anterior -->
-                <button class="carousel-btn prev-btn" aria-label="Servicio anterior">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="15 18 9 12 15 6"></polyline>
-                    </svg>
-                </button>
-
-                <!-- Área visible del carrusel -->
-                <div class="carousel-viewport" tabindex="0" aria-label="Carrusel de servicios">
-                    <div class="carousel-track">
-                        <!-- Tarjeta 1 -->
-                        <div class="carousel-slide">
-                            <article class="service-card-content">
-                                <div class="card-badge">01 // SEGURIDAD</div>
-                                <div class="card-icon">
-                                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-                                </div>
-                                <h3>Asesoría en Ciberseguridad</h3>
-                                <p>Auditorías personales y corporativas básicas, concientización sobre phishing, y protección de identidad digital para usuarios y empleados.</p>
-                                <a href="#contact" class="card-link">Saber más &rarr;</a>
-                            </article>
-                        </div>
-                        <!-- Tarjeta 2 -->
-                        <div class="carousel-slide">
-                            <article class="service-card-content">
-                                <div class="card-badge">02 // DESARROLLO</div>
-                                <div class="card-icon">
-                                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
-                                </div>
-                                <h3>Desarrollo Web Front-End</h3>
-                                <p>Creación de sitios web modernos, responsivos y seguros utilizando las mejores prácticas de HTML, CSS y arquitecturas escalables.</p>
-                                <a href="#contact" class="card-link">Saber más &rarr;</a>
-                            </article>
-                        </div>
-                        <!-- Tarjeta 3 -->
-                        <div class="carousel-slide">
-                            <article class="service-card-content">
-                                <div class="card-badge">03 // AUDITORÍA</div>
-                                <div class="card-icon">
-                                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                                </div>
-                                <h3>Análisis de Vulnerabilidades</h3>
-                                <p>Evaluación de aplicaciones web para detectar fallos de seguridad comunes antes de que puedan ser explotados por atacantes.</p>
-                                <a href="#contact" class="card-link">Saber más &rarr;</a>
-                            </article>
-                        </div>
-                        <!-- Tarjeta 4 -->
-                        <div class="carousel-slide">
-                            <article class="service-card-content">
-                                <div class="card-badge">04 // INTELIGENCIA ARTIFICIAL</div>
-                                <div class="card-icon">
-                                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                                        <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
-                                        <rect x="9" y="9" width="6" height="6"></rect>
-                                        <line x1="9" y1="1" x2="9" y2="4"></line>
-                                        <line x1="15" y1="1" x2="15" y2="4"></line>
-                                        <line x1="9" y1="20" x2="9" y2="23"></line>
-                                        <line x1="15" y1="20" x2="15" y2="23"></line>
-                                        <line x1="20" y1="9" x2="23" y2="9"></line>
-                                        <line x1="20" y1="14" x2="23" y2="14"></line>
-                                        <line x1="1" y1="9" x2="4" y2="9"></line>
-                                        <line x1="1" y1="14" x2="4" y2="14"></line>
-                                    </svg>
-                                </div>
-                                <h3>Optimización con Inteligencia Artificial</h3>
-                                <p>Servicio de asistencia y consultoría (Prompter) para integrar herramientas de IA en tus flujos de trabajo diarios. Creación de prompts efectivos y automatización de tareas para multiplicar tu productividad.</p>
-                                <a href="#contact" class="card-link">Saber más &rarr;</a>
-                            </article>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Botón Siguiente -->
-                <button class="carousel-btn next-btn" aria-label="Servicio siguiente">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="9 18 15 12 9 6"></polyline>
-                    </svg>
-                </button>
-            </div>
-
-            <!-- Indicadores (Dots) de navegación -->
-            <div class="carousel-dots" id="carousel-dots" aria-label="Indicadores de diapositiva"></div>
         </section>
 
         <section id="contact" class="section">
