@@ -460,7 +460,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     else prevSlide();
                 }
             });
-        } // <--- 🛑 AQUÍ CIERRA CORRECTAMENTE EL BLOQUE "if (viewport)"
+        } 
 
         // Añadimos el listener a cada enlace del menú
         navAnchors.forEach(anchor => {
