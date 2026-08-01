@@ -598,6 +598,12 @@ p { color: var(--text-muted); margin-bottom: var(--spacing-md); }
     box-shadow: 0 10px 25px rgba(234, 67, 53, 0.4), inset 0 0 10px rgba(234, 67, 53, 0.2);
 }
 
+.social-bubble.linkedin:hover {
+    border-color: #0A66C2;
+    color: #0A66C2;
+    box-shadow: 0 10px 25px rgba(10, 102, 194, 0.4), inset 0 0 10px rgba(10, 102, 194, 0.2);
+}
+
 .social-bubble.github:hover {
     border-color: #ffffff;
     color: #ffffff;
@@ -697,6 +703,14 @@ p { color: var(--text-muted); margin-bottom: var(--spacing-md); }
 }
 .social-bubble.gmail:hover::after { 
     border-top-color: #EA4335; 
+}
+
+.social-bubble.linkedin:hover::before { 
+    border-color: #0A66C2; 
+    box-shadow: 0 0 15px rgba(10, 102, 194, 0.2); 
+}
+.social-bubble.linkedin:hover::after { 
+    border-top-color: #0A66C2; 
 }
 
 .social-bubble.github:hover::before { 
