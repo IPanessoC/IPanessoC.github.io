@@ -202,6 +202,114 @@ document.addEventListener("DOMContentLoaded", () => {
         let isAnimating = false;
         let autoPlayInterval = null;
         const delay = 4500;
+
+        // ... (Tu código anterior de initCarousel, botones prev/next, etc.)
+
+        if (viewport) {
+            viewport.addEventListener('mouseenter', stopAutoPlay);
+            viewport.addEventListener('mouseleave', startAutoPlay);
+            viewport.addEventListener('focusin', stopAutoPlay);
+            viewport.addEventListener('focusout', startAutoPlay);
+
+            viewport.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight') { nextSlide(); resetAutoPlay(); }
+                if (e.key === 'ArrowLeft') { prevSlide(); resetAutoPlay(); }
+            });
+
+            // Swipe táctil nativo (Celulares)
+            let touchStartX = 0;
+            viewport.addEventListener('touchstart', (e) => {
+                touchStartX = e.changedTouches[0].screenX;
+                stopAutoPlay();
+            }, { passive: true });
+
+            viewport.addEventListener('touchend', (e) => {
+                const touchEndX = e.changedTouches[0].screenX;
+                if (touchStartX - touchEndX > 50) nextSlide();
+                else if (touchEndX - touchStartX > 50) prevSlide();
+                startAutoPlay();
+            }, { passive: true });
+
+            // =====================================
+            // NUEVO: EVENTOS AVANZADOS CORRECTAMENTE AISLADOS
+            // =====================================
+            
+            // Lógica del Tutorial (Solo si tienen cursor/mouse)
+            const isTouchDevice = window.matchMedia("(hover: none) and (pointer: coarse)").matches;
+            const tutorial = module.querySelector('#swipe-tutorial');
+            
+            if (!isTouchDevice && tutorial && !sessionStorage.getItem('tutorialSeen')) {
+                const tutTl = gsap.timeline();
+                tutTl.to(tutorial, { autoAlpha: 1, duration: 0.5, ease: "power2.out", delay: 1 })
+                     .to(tutorial.querySelector('.tutorial-content'), { y: 0, duration: 0.5, ease: "power2.out" }, "-=0.5")
+                     .to(tutorial, { autoAlpha: 0, duration: 0.5, ease: "power2.in", delay: 3 })
+                     .call(() => sessionStorage.setItem('tutorialSeen', 'true'));
+            }
+
+            // A) Trackpad: Deslizamiento fluido con Acumulador
+            let wheelAccumulatorX = 0;
+            let isWheelCooldown = false;
+
+            viewport.addEventListener('wheel', (e) => {
+                // 1. Prioridad a la usabilidad: Si scrollean verticalmente (deltaY mayor), no bloqueamos la página
+                if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) return;
+                
+                // 2. Prevenimos que Safari/Chrome naveguen hacia "Atrás/Adelante" en el historial
+                e.preventDefault();
+
+                if (isWheelCooldown || isAnimating) return;
+
+                // 3. Acumulamos la inercia del trackpad
+                wheelAccumulatorX += e.deltaX;
+
+                // 4. Umbral de intención (60 es un buen balance entre sensibilidad y toques accidentales)
+                const swipeThreshold = 60; 
+
+                if (Math.abs(wheelAccumulatorX) > swipeThreshold) {
+                    if (wheelAccumulatorX > 0) {
+                        nextSlide(); 
+                    } else {
+                        prevSlide(); 
+                    }
+                    resetAutoPlay();
+                    
+                    // Reset y Cooldown corto para que se sienta responsivo (600ms en lugar de 1200ms)
+                    wheelAccumulatorX = 0;
+                    isWheelCooldown = true;
+                    setTimeout(() => { isWheelCooldown = false; }, 600); 
+                }
+            }, { passive: false });
+
+            // B) Mouse: Drag and Drop (Arrastrar)
+            let isDragging = false;
+            let startDragX = 0;
+
+            viewport.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                startDragX = e.clientX;
+                stopAutoPlay();
+            });
+
+            window.addEventListener('mouseup', () => {
+                isDragging = false;
+                startAutoPlay();
+            });
+
+            viewport.addEventListener('mousemove', (e) => {
+                if (!isDragging || isAnimating) return;
+                
+                const currentDragX = e.clientX;
+                const diff = startDragX - currentDragX;
+
+                if (Math.abs(diff) > 60) {
+                    isDragging = false;
+                    if (diff > 0) nextSlide();
+                    else prevSlide();
+                    resetAutoPlay();
+                }
+            });
+        }
+
         
         // 1. Setup Inicial: Configuración del espacio 3D
         function setupLayout() {
@@ -391,30 +499,24 @@ document.addEventListener("DOMContentLoaded", () => {
     const links = document.querySelectorAll('.nav-links li');
     let isMenuOpen = false;
 
-    // 1. Configuramos matchMedia para aislar el comportamiento móvil
     let mm = gsap.matchMedia();
 
     mm.add("(max-width: 768px)", () => {
-        // 2. Creamos la línea de tiempo pausada
         const tl = gsap.timeline({ paused: true });
 
-        // Animación del fondo (expansión radial)
         tl.to(navLinks, {
-            autoAlpha: 1, // Maneja visibility y opacity simultáneamente
+            autoAlpha: 1,
             clipPath: "circle(150% at calc(100% - 40px) 40px)",
             duration: 0.6,
             ease: "power3.inOut"
-        })
-        // Animación en cascada de los enlaces (Stagger)
-        .from(links, {
+        }).from(links, {
             y: 30,
             opacity: 0,
             duration: 0.4,
-            stagger: 0.1, // Retraso de 0.1s entre cada enlace
+            stagger: 0.1,
             ease: "power2.out"
-        }, "-=0.3"); // Este "-=0.3" hace que empiece un poco antes de que termine el fondo
+        }, "-=0.3");
 
-        // 3. Manejo del clic
         const toggleMenu = () => {
             isMenuOpen = !isMenuOpen;
             menuToggle.classList.toggle('is-active');
@@ -422,7 +524,6 @@ document.addEventListener("DOMContentLoaded", () => {
             
             if (isMenuOpen) {
                 tl.play();
-                // Bloqueamos el scroll del fondo cuando el menú está abierto
                 document.body.style.overflow = 'hidden'; 
             } else {
                 tl.reverse();
@@ -430,115 +531,31 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         };
 
-        // Escuchar el botón hamburguesa
         menuToggle.addEventListener('click', toggleMenu);
 
-        // 4. Manejo del clic en los enlaces (Mejorado)
-        const navAnchors = document.querySelectorAll('.nav-links a'); // Seleccionamos la etiqueta <a> directamente
+        const navAnchors = document.querySelectorAll('.nav-links a');
 
         const handleLinkClick = (e) => {
-            if (!isMenuOpen) return; // Si el menú no está abierto, no hacemos nada
-            
-            e.preventDefault(); // 🚫 Bloqueamos el salto instantáneo nativo del navegador
+            if (!isMenuOpen) return;
+            e.preventDefault(); 
             
             const targetId = e.currentTarget.getAttribute('href');
             const targetSection = document.querySelector(targetId);
 
-            toggleMenu(); // Cambiamos el estado (isMenuOpen) a false, ícono a "=", y ejecutamos tl.reverse()
+            toggleMenu(); 
 
-            // Hacemos un scroll suave (Smooth Scroll) hacia la sección
             if (targetSection) {
-                // Le damos un respiro de 150ms para que la animación de cierre de GSAP 
-                // inicie fluidamente antes de mover la cámara
                 setTimeout(() => {
                     targetSection.scrollIntoView({ behavior: 'smooth' });
                 }, 150);
             }
         };
 
-        // 5. EVENTOS AVANZADOS: Touchpad, Drag y Tutorial
-        if (viewport) {
-            // Lógica del Tutorial (Solo si tienen cursor/mouse)
-            const isTouchDevice = window.matchMedia("(hover: none) and (pointer: coarse)").matches;
-            const tutorial = module.querySelector('#swipe-tutorial');
-            
-            if (!isTouchDevice && tutorial && !sessionStorage.getItem('tutorialSeen')) {
-                // Secuencia GSAP para mostrar y ocultar el tutorial
-                const tutTl = gsap.timeline();
-                tutTl.to(tutorial, { autoAlpha: 1, duration: 0.5, ease: "power2.out", delay: 1 })
-                     .to(tutorial.querySelector('.tutorial-content'), { y: 0, duration: 0.5, ease: "power2.out" }, "-=0.5")
-                     .to(tutorial, { autoAlpha: 0, duration: 0.5, ease: "power2.in", delay: 3 })
-                     .call(() => sessionStorage.setItem('tutorialSeen', 'true'));
-            }
-
-            // A) Trackpad: Deslizamiento con dos dedos (Evento Wheel)
-            let isWheelCooldown = false;
-            viewport.addEventListener('wheel', (e) => {
-                if (isWheelCooldown || isAnimating) return;
-
-                if (Math.abs(e.deltaX) > Math.abs(e.deltaY) && Math.abs(e.deltaX) > 30) {
-                    e.preventDefault();
-                    isWheelCooldown = true;
-                    
-                    if (e.deltaX > 0) nextSlide();
-                    else prevSlide();
-
-                    setTimeout(() => { isWheelCooldown = false; }, 1200); 
-                }
-            }, { passive: false });
-
-            // B) Mouse: Arrastrar con clic presionado (Drag)
-            let isDragging = false;
-            let startDragX = 0;
-
-            viewport.addEventListener('mousedown', (e) => {
-                isDragging = true;
-                startDragX = e.clientX;
-                stopAutoPlay();
-            });
-
-            window.addEventListener('mouseup', () => {
-                isDragging = false;
-                startAutoPlay();
-            });
-
-            viewport.addEventListener('mousemove', (e) => {
-                if (!isDragging || isAnimating) return;
-                
-                const currentDragX = e.clientX;
-                const diff = startDragX - currentDragX;
-
-                if (Math.abs(diff) > 60) {
-                    isDragging = false;
-                    if (diff > 0) nextSlide();
-                    else prevSlide();
-                }
-            });
-        } 
-
-        // Añadimos el listener a cada enlace del menú
         navAnchors.forEach(anchor => {
             anchor.addEventListener('click', handleLinkClick);
         });
 
-        // Cleanup: Limpiamos absolutamente todo para evitar fugas de memoria
-        return () => {
-            tl.kill();
-            isMenuOpen = false;
-            menuToggle.classList.remove('is-active');
-            document.body.style.overflow = '';
-            menuToggle.removeEventListener('click', toggleMenu);
-            navAnchors.forEach(anchor => {
-                anchor.removeEventListener('click', handleLinkClick);
-            });
-        };
-
-        // Añadimos el listener a cada enlace
-        navAnchors.forEach(anchor => {
-            anchor.addEventListener('click', handleLinkClick);
-        });
-
-        // Cleanup: Limpiamos absolutamente todo para evitar fugas de memoria si rotan la pantalla
+        // Cleanup unificado para evitar memory leaks al redimensionar la pantalla
         return () => {
             tl.kill();
             isMenuOpen = false;
