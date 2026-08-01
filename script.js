@@ -120,6 +120,60 @@ document.addEventListener("DOMContentLoaded", () => {
     // ==========================================
     const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+    // ==========================================
+    // EFECTO TYPEWRITER (Terminal en el Hero)
+    // ==========================================
+    const words = ["tu proyecto", "tu plataforma", "tu presencia", "tu alcance"];
+    const typeTarget = document.getElementById("typewriter-target");
+    
+    let wordIndex = 0;
+    let charIndex = 0;
+    let isDeleting = false;
+    let typeSpeed = 100;
+
+    function typeWriterEffect() {
+        if (!typeTarget) return;
+
+        // ACCESIBILIDAD: Si el usuario prefiere movimiento reducido, 
+        // dejamos la primera palabra estática y cancelamos el bucle.
+        if (isReducedMotion) {
+            typeTarget.textContent = words[0];
+            return;
+        }
+
+        const currentWord = words[wordIndex];
+        
+        if (isDeleting) {
+            // Borrando
+            typeTarget.textContent = currentWord.substring(0, charIndex - 1);
+            charIndex--;
+            typeSpeed = 40; // Borra rápido (como cuando dejas presionado Backspace)
+        } else {
+            // Escribiendo
+            typeTarget.textContent = currentWord.substring(0, charIndex + 1);
+            charIndex++;
+            // Lógica para que parezca humano (pequeñas variaciones de tiempo)
+            typeSpeed = 100 + Math.random() * 50; 
+        }
+
+        // Control de estados (Cuándo parar, borrar o cambiar de palabra)
+        if (!isDeleting && charIndex === currentWord.length) {
+            // Terminó de escribir: Pausa antes de borrar
+            isDeleting = true;
+            typeSpeed = 2000; 
+        } else if (isDeleting && charIndex === 0) {
+            // Terminó de borrar: Cambia de palabra
+            isDeleting = false;
+            wordIndex = (wordIndex + 1) % words.length;
+            typeSpeed = 500; // Pausa antes de empezar a escribir la nueva
+        }
+
+        setTimeout(typeWriterEffect, typeSpeed);
+    }
+
+    // Iniciamos el efecto
+    typeWriterEffect();
+
     if (!isReducedMotion) {
         gsap.timeline()
             .from(".tagline", { y: 20, opacity: 0, duration: 0.8, ease: "power3.out", delay: 0.2 })
