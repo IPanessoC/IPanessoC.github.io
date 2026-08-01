@@ -858,13 +858,17 @@ p { color: var(--text-muted); margin-bottom: var(--spacing-md); }
 
 /* 1. Espacio debajo del título (h2) */
 #contact .section-title {
-    margin-top: 2rem; /*Respiro arriba*/
-    margin-bottom: 4rem; /* Ajustamos para que el párrafo no quede tan desconectado del título */
+    margin-top: 1rem; /*Respiro arriba*/
+    margin-bottom: 5rem; /* Ajustamos para que el párrafo no quede tan desconectado del título */
+}
+
+#contact h3 {
+    margin-bottom: 3.5rem; /* Respiro entre subtítulo y párrafo */
 }
 
 /* 2. Espacio entre el párrafo y las burbujas sociales */
 #contact p {
-    margin-bottom: 4rem; /* Aumentamos drásticamente el respiro antes de los botones */
+    margin-bottom: 4.5rem; /* Aumentamos drásticamente el respiro antes de los botones */
     
     /* Opcional: Centramos y limitamos el ancho para mejorar la legibilidad (Longitud de línea óptima) */
     max-width: 600px;
