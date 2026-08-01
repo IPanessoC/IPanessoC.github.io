@@ -853,6 +853,35 @@ p { color: var(--text-muted); margin-bottom: var(--spacing-md); }
 }
 
 /* =========================================
+   AJUSTES DE ESPACIADO - SECCIÓN CONTACTO
+   ========================================= */
+
+/* 1. Espacio debajo del título (h2) */
+#contact .section-title {
+    margin-top: 2rem; /*Respiro arriba*/
+    margin-bottom: 4rem; /* Ajustamos para que el párrafo no quede tan desconectado del título */
+}
+
+/* 2. Espacio entre el párrafo y las burbujas sociales */
+#contact p {
+    margin-bottom: 4rem; /* Aumentamos drásticamente el respiro antes de los botones */
+    
+    /* Opcional: Centramos y limitamos el ancho para mejorar la legibilidad (Longitud de línea óptima) */
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 1.1rem; /* Subimos un poco el tamaño para mantener jerarquía visual */
+    color: var(--text-main); /* Lo iluminamos levemente para invitar a la acción */
+}
+
+/* 3. Refinamiento del contenedor de burbujas */
+#contact .social-bubbles {
+    /* Como ya le dimos mucho espacio al párrafo, podemos resetear el margen superior 
+       que aplicaba la clase .mt-2 en el HTML para tener el control absoluto desde aquí */
+    margin-top: 0; 
+}
+
+/* =========================================
    PREVENCIÓN DE FOUC (Parpadeo de carga)
    ========================================= */
 .carousel-slide {
