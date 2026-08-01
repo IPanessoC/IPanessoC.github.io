@@ -103,9 +103,33 @@ document.addEventListener("DOMContentLoaded", () => {
         requestAnimationFrame(animate);
     }
 
-    window.addEventListener('mousemove', (e) => { mouse.x = e.x; mouse.y = e.y; });
-    window.addEventListener('mouseout', () => { mouse.x = undefined; mouse.y = undefined; });
-    
+    // ==========================================
+    // CONTROL DEL RATÓN (Con detector de inactividad)
+    // ==========================================
+    let mouseIdleTimer;
+
+    window.addEventListener('mousemove', (e) => {
+        // 1. Actualizamos coordenadas mientras se mueve
+        mouse.x = e.x;
+        mouse.y = e.y;
+
+        // 2. Limpiamos el temporizador previo en cada frame de movimiento
+        clearTimeout(mouseIdleTimer);
+
+        // 3. Si pasan 150ms sin que se dispare otro 'mousemove', consideramos que está quieto
+        mouseIdleTimer = setTimeout(() => {
+            mouse.x = undefined;
+            mouse.y = undefined;
+        }, 150); // Puedes ajustar este valor (150-200ms se siente muy natural)
+    });
+
+    window.addEventListener('mouseout', () => {
+        // Limpiamos el temporizador y el ratón si salen de la ventana del navegador
+        clearTimeout(mouseIdleTimer);
+        mouse.x = undefined;
+        mouse.y = undefined;
+    });
+
     let resizeTimeout;
     window.addEventListener('resize', () => {
         clearTimeout(resizeTimeout);
