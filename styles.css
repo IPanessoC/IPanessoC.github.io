@@ -143,14 +143,14 @@ p { color: var(--text-muted); margin-bottom: var(--spacing-md); }
    ========================================= */
 body.light-theme {
     /* Nueva Paleta Orgánica/Tech */
-    --bg-main: #FFFDE7; /* Amarillo Claro (Cream) */
-    --bg-alt: #F9FBE7;  /* Amarillo verdoso muy sutil */
-    --text-main: #1A531A; /* Verde Oscuro para contraste */
-    --text-muted: #4F6F52; /* Verde Musgo */
+    --bg-main: #f4f9c3; /* Amarillo Claro (Cream) */
+    --bg-alt: #f7fdc4;  /* Amarillo verdoso muy sutil */
+    --text-main: #cacd32; /* Verde Oscuro para contraste */
+    --text-muted: #6f654f; /* Verde Musgo */
     
     /* Acentos Verde Eléctrico/Lima */
-    --accent-primary: #228B22; /* ForestGreen */
-    --accent-secondary: #32CD32; /* LimeGreen */
+    --accent-primary: #6f654f; /* ForestGreen */
+    --accent-secondary: #cacd32; /* LimeGreen */
 }
 
 /* Botón Toggle */
