@@ -289,9 +289,30 @@ body.light-theme {
 
 /* Modificamos el layout interno para los certificados */
 .cert-card {
-    padding: 1.5rem; /* Menos padding para darle espacio al certificado */
-    justify-content: flex-start;
+    /* 1. la misma variable de altura mínima que los servicios */
+    min-height: var(--card-min-height); 
+    width: 100%;
+    
+    /* 2.  aspecto visual (fondo, bordes, sombras) para consistencia en el UI */
+    background: linear-gradient(145deg, rgba(15, 15, 24, 0.9), rgba(8, 8, 14, 0.95));
+    border: 1px solid rgba(168, 85, 247, 0.25);
+    border-radius: var(--border-radius);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), inset 0 0 20px rgba(168, 85, 247, 0.05);
+
+    /* 3. Layout Flex para distribuir el espacio verticalmente */
+    display: flex;
+    flex-direction: column;
+    /* space-between empuja la imagen arriba y el texto abajo si sobra espacio vertical */
+    justify-content: space-between; 
     gap: 1.5rem;
+    padding: 1.5rem;
+    transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.cert-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(236, 72, 153, 0.6);
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.8), 0 0 25px rgba(168, 85, 247, 0.25);
 }
 
 /* El contenedor del certificado */
@@ -299,6 +320,7 @@ body.light-theme {
     width: 100%;
     /* Un aspect-ratio clásico de certificado apaisado (landscape) */
     aspect-ratio: 4 / 3; 
+    flex: 0 0 auto;
     background: rgba(0, 0, 0, 0.4);
     border-radius: 8px;
     border: 1px solid rgba(168, 85, 247, 0.15);
@@ -389,6 +411,11 @@ body.light-theme {
     color: var(--accent-secondary);
     font-family: monospace; /* Le da un toque "tech" o de código */
     margin-bottom: 0;
+    flex: 1 1 auto; 
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Centra el texto verticalmente en el espacio sobrante */
+    text-align: center;
 }
 
 @media (max-width: 768px) {

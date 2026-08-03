@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <style>
+      /* 
+         DEFINICIÓN DE COLORES DINÁMICOS BASADOS EN TU CSS
+         Por defecto usa los colores del modo oscuro (root)
+      */
+      :root {
+        --logo-primary: #A855F7;   /* var(--accent-primary) oscuro */
+        --logo-secondary: #EC4899; /* var(--accent-secondary) oscuro */
+      }
+
+      /* 
+         SELECTORES PARA EL SVG
+         Hacemos que el trazo (stroke) sea dinámico.
+      */
+      .p-fill { fill: var(--logo-primary); }
+      .p-stroke { stroke: var(--logo-primary); }
+      .s-stroke { stroke: var(--logo-secondary); }
+
+      /* 
+         MEDIA QUERY PARA DETECTAR MODO CLARO (A nivel de Sistema Operativo)
+         Si el usuario tiene el PC/Móvil en modo claro, cambiamos los colores.
+         Usamos los colores de tu body.light-theme
+      */
+      @media (prefers-color-scheme: light) {
+        :root {
+          --logo-primary: #d6a02d;   /* var(--accent-primary) claro */
+          --logo-secondary: #cacd32; /* var(--accent-secondary) claro */
+        }
+      }
+    </style>
+  </defs>
+  
+  <!-- Contorno del Escudo -->
+  <path class="p-stroke" d="M50,5 L15,20 v35 c0,25 35,35 35,35 s35,-10 35,-35 v-35 L50,5 z" fill="none" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <!-- Símbolo de Código </> interior -->
+  <polyline class="s-stroke" points="35,40 25,50 35,60" fill="none" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  <polyline class="s-stroke" points="65,40 75,50 65,60" fill="none" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  <line class="p-stroke" x1="58" y1="35" x2="42" y2="65" stroke-width="6" stroke-linecap="round"/>
+</svg>
