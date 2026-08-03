@@ -143,14 +143,14 @@ p { color: var(--text-muted); margin-bottom: var(--spacing-md); }
    ========================================= */
 body.light-theme {
     /* Nueva Paleta Orgánica/Tech */
-    --bg-main: #f4f9c3; /* Amarillo Claro (Cream) */
-    --bg-alt: #f7fdc4;  /* Amarillo verdoso muy sutil */
-    --text-main: #d4d47b; /* Verde Oscuro para contraste */
-    --text-muted: #6f654f; /* Verde Musgo */
+    --bg-main: #FAFCF3; /* Amarillo Claro (Cream) */
+    --bg-alt: #EFF4D9;  /* Amarillo verdoso muy sutil */
+    --text-main: #142E16; /* Verde Oscuro para contraste */
+    --text-muted: #4B6349; /* Verde Musgo */
     
     /* Acentos Verde Eléctrico/Lima */
-    --accent-primary: #d6a02d; /* ForestGreen */
-    --accent-secondary: #cacd32; /* LimeGreen */
+    --accent-primary: #52B72E; /* ForestGreen */
+    --accent-secondary: #EAB308; /* LimeGreen */
 }
 
 /* Botón Toggle */
@@ -176,18 +176,18 @@ body.light-theme {
   necesitamos actualizarlos cuando .light-theme esté activo.
 */
 .light-theme .header {
-    background: rgba(255, 255, 255, 0.85);
-    border-bottom: 1px solid rgba(37, 99, 235, 0.1);
+    background: rgba(250, 252, 243, 0.85);
+    border-bottom: 1px solid rgba(82, 183, 46, 0.15);
 }
 
 .light-theme .section {
-    background: rgba(255, 255, 255, 0.5);
+    background: rgba(250, 252, 243, 0.5);
 }
 
 .light-theme .terminal-tagline {
     background: #FFFFFF;
-    border-color: rgba(37, 99, 235, 0.3);
-    box-shadow: 0 4px 15px rgba(37, 99, 235, 0.05);
+    border-color: rgba(82, 183, 46, 0.3);
+    box-shadow: 0 4px 15px rgba(82, 183, 46, 0.08);
 }
 
 /* Tarjetas de Servicio (Look corporativo y limpio) */
