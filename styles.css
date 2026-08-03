@@ -145,11 +145,11 @@ body.light-theme {
     /* Nueva Paleta Orgánica/Tech */
     --bg-main: #f4f9c3; /* Amarillo Claro (Cream) */
     --bg-alt: #f7fdc4;  /* Amarillo verdoso muy sutil */
-    --text-main: #cacd32; /* Verde Oscuro para contraste */
+    --text-main: #d4d47b; /* Verde Oscuro para contraste */
     --text-muted: #6f654f; /* Verde Musgo */
     
     /* Acentos Verde Eléctrico/Lima */
-    --accent-primary: #6f654f; /* ForestGreen */
+    --accent-primary: #d6a02d; /* ForestGreen */
     --accent-secondary: #cacd32; /* LimeGreen */
 }
 
@@ -899,6 +899,17 @@ body.light-theme {
 .social-bubble.whatsapp:hover::after { 
     border-top-color: #25D366; 
 }
+
+/* =========================================
+   FIX & TEST: BUBBLE & TOOLTIP EN MODO CLARO
+   ========================================= */
+
+body.light-theme .social-bubble.github:hover {
+    color: var(--accent-primary);
+    border-color: var(--accent-primary);
+    box-shadow: 0 10px 25px rgba(168, 85, 247, 0.4), inset 0 0 10px rgba(168, 85, 247, 0.2);
+}
+
 
 /* --- ESTILOS DEL MENÚ HAMBURGUESA (MULTI-DISPOSITIVO) --- */
 .mobile-menu-toggle {
