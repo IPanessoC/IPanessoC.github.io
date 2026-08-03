@@ -900,35 +900,41 @@ body.light-theme {
     border-top-color: #25D366; 
 }
 
-/* --- ESTILOS DEL MENÚ MÓVIL --- */
+/* --- ESTILOS DEL MENÚ HAMBURGUESA (MULTI-DISPOSITIVO) --- */
 .mobile-menu-toggle {
-    display: none;
+    display: flex; /* Cambiado: Ahora siempre es visible */
     flex-direction: column;
     justify-content: space-between;
-    width: 30px;
-    height: 20px;
+    width: 36px; /* Ligeramente más grande para mouse (PC) */
+    height: 24px;
     background: none;
     border: none;
     cursor: pointer;
-    z-index: 999; /* Para que quede por encima del overlay */
+    z-index: 999; /* Por encima del overlay del menú */
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.mobile-menu-toggle:hover {
+    transform: scale(1.1); /* Feedback visual para PC */
 }
 
 .mobile-menu-toggle .bar {
     width: 100%;
-    height: 2px;
+    height: 3px; /* Barras más gruesas en PC */
     background-color: var(--accent-primary, #A855F7);
-    transition: transform 0.3s ease, opacity 0.3s ease;
+    border-radius: 4px;
+    transition: transform 0.3s ease, opacity 0.3s ease, background-color 0.3s ease;
 }
 
-/* Cambios a "X" cuando el menú está abierto */
+/* Animación de la "X" al abrir */
 .mobile-menu-toggle.is-active .top {
-    transform: translateY(9px) rotate(45deg);
+    transform: translateY(10.5px) rotate(45deg);
 }
 .mobile-menu-toggle.is-active .middle {
     opacity: 0;
 }
 .mobile-menu-toggle.is-active .bottom {
-    transform: translateY(-9px) rotate(-45deg);
+    transform: translateY(-10.5px) rotate(-45deg);
 }
 
 /* Breakpoint para Móviles (Tablets verticales y celulares) */
@@ -1067,4 +1073,71 @@ body.light-theme {
 .carousel-track.is-ready .carousel-slide {
     visibility: visible;
     /* La opacidad ahora será controlada 100% por GSAP */
+}
+
+/* --- COMPORTAMIENTO RESPONSIVO DEL MENÚ --- */
+
+/* 1. Vista de Celular/Tablet (Menú a pantalla completa) */
+@media (max-width: 768px) {
+    .mobile-menu-toggle {
+        width: 30px; /* Tamaño original para táctil */
+        height: 20px;
+    }
+    .mobile-menu-toggle:hover {
+        transform: none; /* Desactivar hover en móviles */
+    }
+    .mobile-menu-toggle .bar {
+        height: 2px;
+    }
+    .mobile-menu-toggle.is-active .top {
+        transform: translateY(9px) rotate(45deg);
+    }
+    .mobile-menu-toggle.is-active .bottom {
+        transform: translateY(-9px) rotate(-45deg);
+    }
+
+    .nav-links {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background: rgba(10, 10, 15, 0.95);
+        backdrop-filter: blur(10px);
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 2rem;
+        z-index: 998;
+        clip-path: circle(0px at calc(100% - 40px) 40px);
+        visibility: hidden; 
+    }
+}
+
+/* 2. Vista de PC (Panel lateral deslizante) */
+@media (min-width: 769px) {
+    .nav-links {
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 400px; /* Ancho del panel lateral */
+        height: 100vh;
+        background: rgba(10, 10, 15, 0.95);
+        backdrop-filter: blur(15px);
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 2.5rem;
+        z-index: 998;
+        border-left: 1px solid rgba(168, 85, 247, 0.2);
+        
+        /* Oculto a la derecha por defecto */
+        transform: translateX(100%);
+        visibility: hidden;
+        opacity: 0;
+    }
+    .nav-links a {
+        font-size: 1.5rem;
+        font-weight: bold;
+    }
 }

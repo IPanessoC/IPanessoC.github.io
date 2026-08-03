@@ -4,8 +4,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const sunIcon = themeBtn.querySelector('.sun-icon');
     const moonIcon = themeBtn.querySelector('.moon-icon');
     
+    // VARIABLE CACHEADA PARA RENDIMIENTO (Evita leer el DOM a 60 FPS)
+    let isLightMode = localStorage.getItem('theme') === 'light';
+
     // 1. APLICAR TEMA AL INICIO
-    if (localStorage.getItem('theme') === 'light') {
+    if (isLightMode) {
         document.body.classList.add('light-theme');
         sunIcon.style.display = 'none';
         moonIcon.style.display = 'block';
@@ -14,90 +17,119 @@ document.addEventListener("DOMContentLoaded", () => {
     // 2. EVENTO CLICK DEL BOTÓN
     themeBtn.addEventListener('click', () => {
         document.body.classList.toggle('light-theme');
+        isLightMode = document.body.classList.contains('light-theme');
+        localStorage.setItem('theme', isLightMode ? 'light' : 'dark');
         
-        // Verificamos el estado actual leyendo directamente el DOM
-        const isLight = document.body.classList.contains('light-theme');
-        localStorage.setItem('theme', isLight ? 'light' : 'dark');
+        sunIcon.style.display = isLightMode ? 'none' : 'block';
+        moonIcon.style.display = isLightMode ? 'block' : 'none';
         
-        sunIcon.style.display = isLight ? 'none' : 'block';
-        moonIcon.style.display = isLight ? 'block' : 'none';
-        
-        // REINICIAMOS LAS PARTÍCULAS para que nazcan con los nuevos colores
-        initCanvas(); 
+        initCanvas(); // Reinicia el canvas con las nuevas reglas físicas
     });
 
     // ==========================================
-    // CÓDIGO DEL CANVAS A PRUEBA DE FALLOS
+    // CANVAS: CONSTELACIÓN NÍTIDA Y MATRIX LLUVIA
     // ==========================================
     const canvas = document.getElementById('cyber-canvas');
     const ctx = canvas.getContext('2d', { alpha: true });
     let width, height, particles = [];
-    let mouse = { x: null, y: null, radius: 130 };
+    let mouse = { x: null, y: null, radius: 150 };
+
+    // Banco de caracteres estilo Matrix
+    const matrixChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*<>[]{}";
 
     function initCanvas() {
         width = canvas.width = window.innerWidth;
         height = canvas.height = window.innerHeight;
         particles = [];
-        const particleCount = width < 768 ? 45 : 100;
         
-        // Leemos el tema actual
-        const isLight = document.body.classList.contains('light-theme');
-        const darkColors = ['#A855F7', '#EC4899', '#3B82F6', '#8B5CF6'];
-        const lightColors = ['#2563EB', '#06B6D4', '#0EA5E9', '#94A3B8'];
-        const activeColors = isLight ? lightColors : darkColors;
+        // El modo Matrix necesita más "gotas" para llenar la pantalla
+        const particleCount = isLightMode ? Math.floor(width / 20) : (width < 768 ? 45 : 90);
         
         for (let i = 0; i < particleCount; i++) {
-            particles.push(new Particle(activeColors));
+            particles.push(new Particle(i));
         }
     }
 
     class Particle {
-        constructor(colorArray) {
-            this.x = Math.random() * width;
+        constructor(index) {
+            this.x = isLightMode ? index * 25 : Math.random() * width; // En Matrix, caen en columnas
             this.y = Math.random() * height;
+            
+            // Físicas Modo Oscuro (Constelación)
             this.size = Math.random() * 2 + 1;
-            this.baseSpeed = Math.random() * 0.8 + 0.3;
-            this.density = (Math.random() * 25) + 1;
-            this.color = colorArray[Math.floor(Math.random() * colorArray.length)];
-        }
-        draw() {
-            ctx.fillStyle = this.color;
-            ctx.beginPath();
+            this.vx = (Math.random() - 0.5) * 0.5;
+            this.vy = (Math.random() - 0.5) * 0.5;
             
-            // LECTURA EN TIEMPO REAL: Si tiene la clase, dibuja nodos de seguridad (cuadrados)
-            if (document.body.classList.contains('light-theme')) {
-                // Multiplicamos el tamaño para que los nodos se vean bien definidos
-                ctx.rect(this.x, this.y, this.size * 2, this.size * 2); 
-            } else {
-                // Modo oscuro: Polvo estelar (círculos)
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-            }
+            // Físicas Modo Claro (Matrix)
+            this.matrixSize = Math.random() * 8 + 14; // Símbolos legibles
+            this.speedY = Math.random() * 2 + 2;      
+            this.char = matrixChars[Math.floor(Math.random() * matrixChars.length)];
+            this.frameCount = 0; // Para el efecto glitcheado
             
-            ctx.closePath();
-            ctx.fill();
+            const darkColors = ['#A855F7', '#EC4899', '#8B5CF6']; 
+            const lightColors = ['#2563EB', '#06B6D4', '#0EA5E9', '#38BDF8']; 
+            
+            this.colorDark = darkColors[Math.floor(Math.random() * darkColors.length)];
+            this.colorLight = lightColors[Math.floor(Math.random() * lightColors.length)];
         }
+
         update() {
-            this.y += this.baseSpeed;
-            if (this.y > height) {
-                this.y = 0;
-                this.x = Math.random() * width;
+            if (isLightMode) {
+                // FÍSICA MATRIX
+                this.y += this.speedY;
+                this.frameCount++;
+                
+                // Efecto Glitch: Cambiar el carácter cada 5 frames
+                if (this.frameCount % 5 === 0) {
+                    this.char = matrixChars[Math.floor(Math.random() * matrixChars.length)];
+                }
+
+                if (this.y > height) {
+                    this.y = 0;
+                    this.speedY = Math.random() * 2 + 2; 
+                }
+            } else {
+                // FÍSICA CONSTELACIÓN
+                this.x += this.vx;
+                this.y += this.vy;
+                if (this.x < 0 || this.x > width) this.vx *= -1;
+                if (this.y < 0 || this.y > height) this.vy *= -1;
+                
+                // Interacción sutil con el ratón solo en modo oscuro
+                if (mouse.x && mouse.y) {
+                    let dx = mouse.x - this.x;
+                    let dy = mouse.y - this.y;
+                    let distance = Math.sqrt(dx * dx + dy * dy);
+                    if (distance < mouse.radius) {
+                        let force = (mouse.radius - distance) / mouse.radius;
+                        this.x -= (dx / distance) * force * 2;
+                        this.y -= (dy / distance) * force * 2;
+                    }
+                }
             }
-            let dx = mouse.x - this.x;
-            let dy = mouse.y - this.y;
-            let distance = Math.sqrt(dx * dx + dy * dy);
-            
-            if (distance < mouse.radius) {
-                let force = (mouse.radius - distance) / mouse.radius;
-                this.x -= (dx / distance) * force * this.density;
-                this.y -= (dy / distance) * force * this.density;
+        }
+
+        draw() {
+            ctx.beginPath();
+            if (isLightMode) {
+                // DIBUJO MATRIX
+                ctx.fillStyle = this.colorLight;
+                ctx.font = `bold ${this.matrixSize}px monospace`;
+                ctx.textAlign = 'center';
+                ctx.fillText(this.char, this.x, this.y);
+            } else {
+                // DIBUJO CONSTELACIÓN NÍTIDA
+                ctx.fillStyle = this.colorDark;
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
             }
+            ctx.closePath();
         }
     }
 
     function connectParticles() {
-        // Leemos el estado para el color de las líneas
-        const isLight = document.body.classList.contains('light-theme');
-        
+        if (isLightMode) return; 
+
         for (let a = 0; a < particles.length; a++) {
             for (let b = a; b < particles.length; b++) {
                 let dx = particles[a].x - particles[b].x;
@@ -107,13 +139,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 
                 if (distance < maxDist) {
                     let opacity = 1 - (distance / maxDist);
-                    
-                    // Líneas azules sólidas para modo día, líneas moradas neón para noche
-                    ctx.strokeStyle = isLight 
-                        ? `rgba(37, 99, 235, ${opacity * 0.25})` 
-                        : `rgba(168, 85, 247, ${opacity * 0.15})`;
-                    
-                    ctx.lineWidth = isLight ? 0.8 : 1;
+                    ctx.strokeStyle = `rgba(168, 85, 247, ${opacity * 0.2})`;
+                    ctx.lineWidth = 1;
                     ctx.beginPath();
                     ctx.moveTo(particles[a].x, particles[a].y);
                     ctx.lineTo(particles[b].x, particles[b].y);
@@ -124,11 +151,20 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function animate() {
-        ctx.clearRect(0, 0, width, height);
+        if (isLightMode) {
+            // Estela semi-transparente para Matrix
+            ctx.fillStyle = 'rgba(248, 250, 252, 0.15)'; 
+            ctx.fillRect(0, 0, width, height);
+        } else {
+            // SOLUCIÓN "MANCHAS": Limpieza total del canvas. 
+            ctx.clearRect(0, 0, width, height);
+        }
+
         for (let i = 0; i < particles.length; i++) {
             particles[i].update();
             particles[i].draw();
         }
+        
         connectParticles();
         requestAnimationFrame(animate);
     }
@@ -555,7 +591,7 @@ document.addEventListener("DOMContentLoaded", () => {
         initCarousel(carousel);
     });
     // ==========================================
-    // MENÚ MÓVIL RESPONSIVO CON GSAP
+    // GSAP: MENÚ HAMBURGUESA MULTI-DISPOSITIVO
     // ==========================================
     const menuToggle = document.querySelector('.mobile-menu-toggle');
     const navLinks = document.querySelector('.nav-links');
@@ -564,21 +600,43 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let mm = gsap.matchMedia();
 
-    mm.add("(max-width: 768px)", () => {
+    // Declaramos ambos breakpoints en el mismo contexto
+    mm.add({
+        isMobile: "(max-width: 768px)",
+        isDesktop: "(min-width: 769px)"
+    }, (context) => {
+        let { isMobile } = context.conditions;
         const tl = gsap.timeline({ paused: true });
 
-        tl.to(navLinks, {
-            autoAlpha: 1,
-            clipPath: "circle(150% at calc(100% - 40px) 40px)",
-            duration: 0.6,
-            ease: "power3.inOut"
-        }).from(links, {
-            y: 30,
-            opacity: 0,
-            duration: 0.4,
-            stagger: 0.1,
-            ease: "power2.out"
-        }, "-=0.3");
+        if (isMobile) {
+            // Animación para Celulares: Círculo expansivo
+            tl.to(navLinks, {
+                autoAlpha: 1,
+                clipPath: "circle(150% at calc(100% - 40px) 40px)",
+                duration: 0.6,
+                ease: "power3.inOut"
+            }).from(links, {
+                y: 30,
+                opacity: 0,
+                duration: 0.4,
+                stagger: 0.1,
+                ease: "power2.out"
+            }, "-=0.3");
+        } else {
+            // Animación para Escritorio: Panel deslizante desde la derecha
+            tl.to(navLinks, {
+                autoAlpha: 1,
+                x: 0, // Regresa a su posición original (translateX: 0)
+                duration: 0.6,
+                ease: "power3.inOut"
+            }).from(links, {
+                x: 30, // Los textos entran deslizando levemente
+                opacity: 0,
+                duration: 0.4,
+                stagger: 0.1,
+                ease: "power2.out"
+            }, "-=0.4");
+        }
 
         const toggleMenu = () => {
             isMenuOpen = !isMenuOpen;
@@ -587,7 +645,7 @@ document.addEventListener("DOMContentLoaded", () => {
             
             if (isMenuOpen) {
                 tl.play();
-                document.body.style.overflow = 'hidden'; 
+                document.body.style.overflow = 'hidden'; // Bloquea el scroll de fondo
             } else {
                 tl.reverse();
                 document.body.style.overflow = '';
@@ -610,7 +668,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (targetSection) {
                 setTimeout(() => {
                     targetSection.scrollIntoView({ behavior: 'smooth' });
-                }, 150);
+                }, isMobile ? 300 : 500); // Espera a que la animación fluya antes de hacer scroll
             }
         };
 
@@ -618,7 +676,7 @@ document.addEventListener("DOMContentLoaded", () => {
             anchor.addEventListener('click', handleLinkClick);
         });
 
-        // Cleanup unificado para evitar memory leaks al redimensionar la pantalla
+        // Cleanup: vital para no romper el layout al redimensionar la ventana de PC a Móvil
         return () => {
             tl.kill();
             isMenuOpen = false;
@@ -628,6 +686,9 @@ document.addEventListener("DOMContentLoaded", () => {
             navAnchors.forEach(anchor => {
                 anchor.removeEventListener('click', handleLinkClick);
             });
+            // Limpiamos los estilos inyectados por GSAP para que el CSS puro vuelva a tomar el control
+            gsap.set(navLinks, { clearProps: "all" });
+            gsap.set(links, { clearProps: "all" });
         };
     });
 });
