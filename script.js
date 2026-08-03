@@ -50,24 +50,42 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+    function initCanvas() {
+    width = canvas.width = window.innerWidth;
+    height = canvas.height = window.innerHeight;
+    particles = [];
+    
+    // CAMBIO: Mucha menor cantidad en modo claro (divisor más grande)
+    const particleCount = isLightMode ? Math.floor(width / 100) : (width < 768 ? 45 : 90);
+    
+    for (let i = 0; i < particleCount; i++) {
+        particles.push(new Particle(i));
+    }
+}
+
+    // 2. Modificar dentro de class Particle -> constructor(index) (~Líneas 70-82)
     class Particle {
         constructor(index) {
-            this.x = isLightMode ? index * 25 : Math.random() * width; // En Matrix, caen en columnas
+            // CAMBIO: Espaciado en X más ancho para compensar que hay menos
+            this.x = isLightMode ? index * 100 + Math.random() * 50 : Math.random() * width;
             this.y = Math.random() * height;
             
-            // Físicas Modo Oscuro (Constelación)
+            // Físicas Modo Oscuro (Constelación) - Quedan igual
             this.size = Math.random() * 2 + 1;
             this.vx = (Math.random() - 0.5) * 0.5;
             this.vy = (Math.random() - 0.5) * 0.5;
             
-            // Físicas Modo Claro (Matrix)
-            this.matrixSize = Math.random() * 8 + 14; // Símbolos legibles
-            this.speedY = Math.random() * 2 + 2;      
+            // Físicas Modo Claro (Nuevos Cuadrados Lentos)
+            // CAMBIO: Mucho más grandes
+            this.matrixSize = Math.random() * 15 + 25; 
+            // CAMBIO: Mucho más lentos
+            this.speedY = Math.random() * 0.5 + 0.5;      
+            
             this.char = matrixChars[Math.floor(Math.random() * matrixChars.length)];
             this.frameCount = 0; // Para el efecto glitcheado
             
             const darkColors = ['#A855F7', '#EC4899', '#8B5CF6']; 
-            const lightColors = ['#2563EB', '#06B6D4', '#0EA5E9', '#38BDF8']; 
+            const lightColors = ['#228B22', '#32CD32', '#00FF00', '#7FFF00'];
             
             this.colorDark = darkColors[Math.floor(Math.random() * darkColors.length)];
             this.colorLight = lightColors[Math.floor(Math.random() * lightColors.length)];

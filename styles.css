@@ -142,15 +142,15 @@ p { color: var(--text-muted); margin-bottom: var(--spacing-md); }
    MODO DÍA (LIGHT THEME - CYBERSECURITY)
    ========================================= */
 body.light-theme {
-    /* Paleta Clara */
-    --bg-main: #F8FAFC; /* Gris Pizarra super claro */
-    --bg-alt: #FFFFFF; /* Blanco puro */
-    --text-main: #0F172A; /* Slate 900 - Contraste alto para lectura */
-    --text-muted: #475569; /* Slate 600 */
+    /* Nueva Paleta Orgánica/Tech */
+    --bg-main: #FFFDE7; /* Amarillo Claro (Cream) */
+    --bg-alt: #F9FBE7;  /* Amarillo verdoso muy sutil */
+    --text-main: #1A531A; /* Verde Oscuro para contraste */
+    --text-muted: #4F6F52; /* Verde Musgo */
     
-    /* Acentos Tech/Seguridad */
-    --accent-primary: #2563EB; /* Azul Corporativo/Seguridad */
-    --accent-secondary: #06B6D4; /* Cian Tecnológico */
+    /* Acentos Verde Eléctrico/Lima */
+    --accent-primary: #228B22; /* ForestGreen */
+    --accent-secondary: #32CD32; /* LimeGreen */
 }
 
 /* Botón Toggle */
