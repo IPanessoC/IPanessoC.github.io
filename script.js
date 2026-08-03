@@ -1,31 +1,38 @@
 document.addEventListener("DOMContentLoaded", () => {
     
+    const themeBtn = document.getElementById('theme-toggle');
+    const sunIcon = themeBtn.querySelector('.sun-icon');
+    const moonIcon = themeBtn.querySelector('.moon-icon');
+    
+    // 1. APLICAR TEMA AL INICIO
+    if (localStorage.getItem('theme') === 'light') {
+        document.body.classList.add('light-theme');
+        sunIcon.style.display = 'none';
+        moonIcon.style.display = 'block';
+    }
+
+    // 2. EVENTO CLICK DEL BOTÓN
+    themeBtn.addEventListener('click', () => {
+        document.body.classList.toggle('light-theme');
+        
+        // Verificamos el estado actual leyendo directamente el DOM
+        const isLight = document.body.classList.contains('light-theme');
+        localStorage.setItem('theme', isLight ? 'light' : 'dark');
+        
+        sunIcon.style.display = isLight ? 'none' : 'block';
+        moonIcon.style.display = isLight ? 'block' : 'none';
+        
+        // REINICIAMOS LAS PARTÍCULAS para que nazcan con los nuevos colores
+        initCanvas(); 
+    });
+
     // ==========================================
-    // 1. CANVAS: Fondo Global Cyberpunk
+    // CÓDIGO DEL CANVAS A PRUEBA DE FALLOS
     // ==========================================
     const canvas = document.getElementById('cyber-canvas');
     const ctx = canvas.getContext('2d', { alpha: true });
-
-    let width, height;
-    let particles = [];
+    let width, height, particles = [];
     let mouse = { x: null, y: null, radius: 130 };
-    const colors = ['#A855F7', '#EC4899', '#3B82F6', '#8B5CF6']; 
-    let scrollSpeedModifier = 1;
-    let lastScrollTop = 0;
-
-    window.addEventListener('scroll', () => {
-        let st = window.pageYOffset || document.documentElement.scrollTop;
-        let delta = Math.abs(st - lastScrollTop);
-        scrollSpeedModifier = 1 + Math.min(delta * 0.05, 3);
-        lastScrollTop = st <= 0 ? 0 : st;
-    });
-
-    setInterval(() => {
-        if (scrollSpeedModifier > 1) {
-            scrollSpeedModifier -= 0.1;
-            if (scrollSpeedModifier < 1) scrollSpeedModifier = 1;
-        }
-    }, 100);
 
     function initCanvas() {
         width = canvas.width = window.innerWidth;
@@ -33,29 +40,44 @@ document.addEventListener("DOMContentLoaded", () => {
         particles = [];
         const particleCount = width < 768 ? 45 : 100;
         
+        // Leemos el tema actual
+        const isLight = document.body.classList.contains('light-theme');
+        const darkColors = ['#A855F7', '#EC4899', '#3B82F6', '#8B5CF6'];
+        const lightColors = ['#2563EB', '#06B6D4', '#0EA5E9', '#94A3B8'];
+        const activeColors = isLight ? lightColors : darkColors;
+        
         for (let i = 0; i < particleCount; i++) {
-            particles.push(new Particle());
+            particles.push(new Particle(activeColors));
         }
     }
 
     class Particle {
-        constructor() {
+        constructor(colorArray) {
             this.x = Math.random() * width;
             this.y = Math.random() * height;
             this.size = Math.random() * 2 + 1;
             this.baseSpeed = Math.random() * 0.8 + 0.3;
             this.density = (Math.random() * 25) + 1;
-            this.color = colors[Math.floor(Math.random() * colors.length)];
+            this.color = colorArray[Math.floor(Math.random() * colorArray.length)];
         }
         draw() {
             ctx.fillStyle = this.color;
             ctx.beginPath();
-            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            
+            // LECTURA EN TIEMPO REAL: Si tiene la clase, dibuja nodos de seguridad (cuadrados)
+            if (document.body.classList.contains('light-theme')) {
+                // Multiplicamos el tamaño para que los nodos se vean bien definidos
+                ctx.rect(this.x, this.y, this.size * 2, this.size * 2); 
+            } else {
+                // Modo oscuro: Polvo estelar (círculos)
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            }
+            
             ctx.closePath();
             ctx.fill();
         }
         update() {
-            this.y += this.baseSpeed * scrollSpeedModifier;
+            this.y += this.baseSpeed;
             if (this.y > height) {
                 this.y = 0;
                 this.x = Math.random() * width;
@@ -73,6 +95,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function connectParticles() {
+        // Leemos el estado para el color de las líneas
+        const isLight = document.body.classList.contains('light-theme');
+        
         for (let a = 0; a < particles.length; a++) {
             for (let b = a; b < particles.length; b++) {
                 let dx = particles[a].x - particles[b].x;
@@ -82,8 +107,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 
                 if (distance < maxDist) {
                     let opacity = 1 - (distance / maxDist);
-                    ctx.strokeStyle = `rgba(168, 85, 247, ${opacity * 0.15})`;
-                    ctx.lineWidth = 1;
+                    
+                    // Líneas azules sólidas para modo día, líneas moradas neón para noche
+                    ctx.strokeStyle = isLight 
+                        ? `rgba(37, 99, 235, ${opacity * 0.25})` 
+                        : `rgba(168, 85, 247, ${opacity * 0.15})`;
+                    
+                    ctx.lineWidth = isLight ? 0.8 : 1;
                     ctx.beginPath();
                     ctx.moveTo(particles[a].x, particles[a].y);
                     ctx.lineTo(particles[b].x, particles[b].y);
@@ -102,6 +132,15 @@ document.addEventListener("DOMContentLoaded", () => {
         connectParticles();
         requestAnimationFrame(animate);
     }
+    
+    // Inicializar
+    initCanvas();
+    animate();
+
+    // Resize listener para que no se rompa al voltear el celular
+    window.addEventListener('resize', () => {
+        initCanvas();
+    });
 
     // ==========================================
     // CONTROL DEL RATÓN (Con detector de inactividad)

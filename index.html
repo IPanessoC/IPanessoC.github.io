@@ -15,18 +15,25 @@
     <header class="header">
         <nav class="nav-container">
             <a href="#hero" class="logo"><span>I</span>Panesso<span>C</span></a>
-            <!-- Botón Hamburguesa (Oculto en Desktop) -->
-            <button class="mobile-menu-toggle" aria-label="Abrir menú" aria-expanded="false">
-                <span class="bar top"></span>
-                <span class="bar middle"></span>
-                <span class="bar bottom"></span>
-            </button>
-            <ul class="nav-links">
-                <li><a href="#services">Servicios</a></li>
-                <li><a href="#about">Sobre Mí</a></li>
-                <li><a href="#certificates">Certificados</a></li>
-                <li><a href="#contact">Contacto</a></li>
-            </ul>
+            
+            <!-- (Aquí asumo que está tu <ul> con los enlaces de navegación) -->
+
+            <!-- NUEVO: Contenedor agrupador para los botones de acción -->
+            <div class="nav-actions">
+                <button id="theme-toggle" class="theme-btn" aria-label="Alternar modo día/noche">
+                    <!-- Icono de Sol -->
+                    <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                    <!-- Icono de Luna -->
+                    <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                </button>
+
+                <!-- Botón Hamburguesa -->
+                <button class="mobile-menu-toggle" aria-label="Abrir menú" aria-expanded="false">
+                    <span class="bar top"></span>
+                    <span class="bar middle"></span>
+                    <span class="bar bottom"></span>
+                </button>
+            </div>
         </nav>
     </header>
 
