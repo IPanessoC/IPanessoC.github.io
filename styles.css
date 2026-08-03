@@ -245,6 +245,20 @@ body.light-theme {
 .light-theme .cert-overlay p { color: var(--text-main); text-shadow: none; }
 
 /* =========================================
+   FIX: CONTRASTE DEL MENÚ EN MODO CLARO
+   ========================================= */
+/* Forzamos que las opciones del menú sean blancas porque el fondo del panel sigue siendo oscuro */
+body.light-theme .nav-links a {
+    color: #FFFFFF; 
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Opcional: Pequeña sombra para extra legibilidad */
+}
+
+/* Mantenemos tu color de acento (verde eléctrico/amarillo) al pasar el mouse */
+body.light-theme .nav-links a:hover {
+    color: var(--accent-primary); 
+}
+
+/* =========================================
    EFECTO TERMINAL (TYPEWRITER)
    ========================================= */
 .terminal-tagline {
