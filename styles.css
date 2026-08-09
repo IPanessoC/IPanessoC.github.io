@@ -972,6 +972,21 @@ body.light-theme .social-bubble::before {
 }
 
 /* =========================================
+   FIX: BORDE Y TRIÁNGULO DEL TOOLTIP GITHUB (MODO CLARO)
+   ========================================= */
+body.light-theme .social-bubble.github:hover::before {
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 15px rgba(234, 179, 8, 0.2); 
+}
+
+/* 2. Modificamos el color del triángulo inferior (::after) */
+body.light-theme .social-bubble.github:hover::after {
+    /* Usamos border-top-color porque el triángulo CSS está construido
+       sobre el borde superior del pseudo-elemento */
+    border-top-color: var(--accent-primary); 
+}
+
+/* =========================================
    FIX & TEST: BUBBLE & TOOLTIP EN MODO CLARO
    ========================================= */
 
