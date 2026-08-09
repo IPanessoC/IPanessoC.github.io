@@ -965,13 +965,20 @@ body.light-theme .nav-links a:hover {
 }
 
 /* =========================================
+   FIX: TEXTO DEL TOOLTIP EN MODO CLARO
+   ========================================= */
+body.light-theme .social-bubble::before {
+    color: #EAB308;
+}
+
+/* =========================================
    FIX & TEST: BUBBLE & TOOLTIP EN MODO CLARO
    ========================================= */
 
 body.light-theme .social-bubble.github:hover {
     color: var(--accent-primary);
     border-color: var(--accent-primary);
-    box-shadow: 0 10px 25px rgba(168, 85, 247, 0.4), inset 0 0 10px rgba(168, 85, 247, 0.2);
+    box-shadow: 0 10px 25px #a855f766, inset 0 0 10px #a855f733;
 }
 
 
