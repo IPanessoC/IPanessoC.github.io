@@ -4,15 +4,41 @@ document.addEventListener("DOMContentLoaded", () => {
     const sunIcon = themeBtn.querySelector('.sun-icon');
     const moonIcon = themeBtn.querySelector('.moon-icon');
     
-    // VARIABLE CACHEADA PARA RENDIMIENTO (Evita leer el DOM a 60 FPS)
-    let isLightMode = localStorage.getItem('theme') === 'light';
+    // 1. DETERMINAR EL TEMA INICIO (Jerarquía: LocalStorage -> Sistema OS)
+    const savedTheme = localStorage.getItem('theme');
+    
+    // matchMedia nos permite consultar reglas CSS desde JavaScript
+    const systemPrefersLight = window.matchMedia('(prefers-color-scheme: light)');
 
-    // 1. APLICAR TEMA AL INICIO
-    if (isLightMode) {
-        document.body.classList.add('light-theme');
-        sunIcon.style.display = 'none';
-        moonIcon.style.display = 'block';
+    // Lógica: Si hay algo guardado, respetamos eso. 
+    // Si no (primera visita), miramos el sistema operativo.
+    let isLightMode = savedTheme === 'light' || (!savedTheme && systemPrefersLight.matches);
+
+    // 2. FUNCIÓN PARA APLICAR LA INTERFAZ VISUAL
+    function applyThemeUI(isLight) {
+        if (isLight) {
+            document.body.classList.add('light-theme');
+            sunIcon.style.display = 'none';
+            moonIcon.style.display = 'block';
+        } else {
+            document.body.classList.remove('light-theme');
+            sunIcon.style.display = 'block';
+            moonIcon.style.display = 'none';
+        }
     }
+
+    // Ejecutamos la función al cargar la página
+    applyThemeUI(isLightMode);
+
+    // 3. EVENTO PARA CAMBIOS EN TIEMPO REAL DEL SISTEMA OPERATIVO
+    systemPrefersLight.addEventListener('change', (e) => {
+        // Solo reaccionamos si el usuario NO ha forzado un tema con tu botón
+        if (!localStorage.getItem('theme')) {
+            isLightMode = e.matches;
+            applyThemeUI(isLightMode);
+            initCanvas(); // Es crucial reiniciar el canvas para actualizar matrix/constelación
+        }
+    });
 
     // 2. EVENTO CLICK DEL BOTÓN
     themeBtn.addEventListener('click', () => {
