@@ -849,7 +849,7 @@ document.addEventListener("DOMContentLoaded", () => {
             };
 
             // AQUI PON TU ENDPOINT DE FORMSPREE
-            const ENDPOINT_FORMSPREE = 'https://formspree.io/f/TU_ID_AQUI';
+            const ENDPOINT_FORMSPREE = 'https://formspree.io/f/xvkgzkao';
 
             try {
                 const response = await fetch(ENDPOINT_FORMSPREE, {

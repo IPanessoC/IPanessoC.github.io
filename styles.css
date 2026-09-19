@@ -19,6 +19,10 @@
     --card-min-height: 440px; 
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 * {
     margin: 0;
     padding: 0;
