@@ -1,34 +1,36 @@
 document.addEventListener("DOMContentLoaded", () => {
     
     // ==========================================
-    // 1. TEMA CLARO/OSCURO
+    // 1. TEMA CLARO/OSCURO (Sincronizado)
     // ==========================================
     const themeBtn = document.getElementById('theme-toggle');
-    let isLightMode = false; // Declarado en un scope superior para que el canvas lo pueda leer
+    const sunIcon = themeBtn ? themeBtn.querySelector('.sun-icon') : null;
+    const moonIcon = themeBtn ? themeBtn.querySelector('.moon-icon') : null;
+    let isLightMode = false;
+
+    const savedTheme = localStorage.getItem('theme');
+    const systemPrefersLight = window.matchMedia('(prefers-color-scheme: light)');
+
+    isLightMode = savedTheme === 'light' || (!savedTheme && systemPrefersLight.matches);
+
+    function applyThemeUI(isLight) {
+        if (isLight) {
+            document.body.classList.add('light-theme');
+            document.documentElement.classList.remove('dark');
+            if (sunIcon) sunIcon.style.display = 'none';
+            if (moonIcon) moonIcon.style.display = 'block';
+        } else {
+            document.body.classList.remove('light-theme');
+            document.documentElement.classList.add('dark');
+            if (sunIcon) sunIcon.style.display = 'block';
+            if (moonIcon) moonIcon.style.display = 'none';
+        }
+    }
+
+    // Se ejecuta SIEMPRE al cargar para aplicar la preferencia previa
+    applyThemeUI(isLightMode);
 
     if (themeBtn) {
-        const sunIcon = themeBtn.querySelector('.sun-icon');
-        const moonIcon = themeBtn.querySelector('.moon-icon');
-        
-        const savedTheme = localStorage.getItem('theme');
-        const systemPrefersLight = window.matchMedia('(prefers-color-scheme: light)');
-
-        isLightMode = savedTheme === 'light' || (!savedTheme && systemPrefersLight.matches);
-
-        function applyThemeUI(isLight) {
-            if (isLight) {
-                document.body.classList.add('light-theme');
-                sunIcon.style.display = 'none';
-                moonIcon.style.display = 'block';
-            } else {
-                document.body.classList.remove('light-theme');
-                sunIcon.style.display = 'block';
-                moonIcon.style.display = 'none';
-            }
-        }
-
-        applyThemeUI(isLightMode);
-
         systemPrefersLight.addEventListener('change', (e) => {
             if (!localStorage.getItem('theme')) {
                 isLightMode = e.matches;
@@ -38,12 +40,9 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         themeBtn.addEventListener('click', () => {
-            document.body.classList.toggle('light-theme');
-            isLightMode = document.body.classList.contains('light-theme');
+            isLightMode = !isLightMode;
             localStorage.setItem('theme', isLightMode ? 'light' : 'dark');
-            
-            sunIcon.style.display = isLightMode ? 'none' : 'block';
-            moonIcon.style.display = isLightMode ? 'block' : 'none';
+            applyThemeUI(isLightMode);
             
             if (typeof initCanvas === 'function') initCanvas(); 
         });
@@ -649,23 +648,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
         styles.forEach((style, index) => {
             const card = document.createElement('div');
-            card.className = "bg-white border border-gray-200 rounded-xl p-5 hover:shadow-xl hover:border-brand-200 transition-all duration-300 flex flex-col h-full";
+            card.className = "bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl p-5 hover:shadow-xl hover:border-brand-200 dark:hover:border-brand-500 transition-all duration-300 flex flex-col h-full";
             
             card.innerHTML = `
-                <h4 class="font-bold text-lg text-gray-900 mb-1">${style.name}</h4>
-                <p class="text-xs text-gray-500 mb-4 h-8 overflow-hidden">${style.description}</p>
+                <h4 class="font-bold text-lg text-gray-900 dark:text-white mb-1">${style.name}</h4>
+                <p class="text-xs text-gray-500 dark:text-slate-400 mb-4 h-8 overflow-hidden">${style.description}</p>
                 
-                <div class="mb-4 bg-gray-50 p-2 rounded-lg border border-gray-100">
+                <div class="mb-4 bg-gray-50 dark:bg-slate-900/60 p-2 rounded-lg border border-gray-100 dark:border-slate-700/60">
                     <div class="flex justify-between items-center mb-2">
-                        <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Principales</span>
+                        <span class="text-[10px] font-bold text-gray-400 dark:text-slate-400 uppercase tracking-wider">Principales</span>
                         <div class="flex gap-1">
-                            ${style.colors.primary.map(c => `<div class="w-6 h-6 rounded border border-gray-200 shadow-sm" style="background-color: ${c};" title="${c}"></div>`).join('')}
+                            ${style.colors.primary.map(c => `<div class="w-6 h-6 rounded border border-gray-200 dark:border-slate-600 shadow-sm" style="background-color: ${c};" title="${c}"></div>`).join('')}
                         </div>
                     </div>
                     <div class="flex justify-between items-center">
-                        <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Secundarios</span>
+                        <span class="text-[10px] font-bold text-gray-400 dark:text-slate-400 uppercase tracking-wider">Secundarios</span>
                         <div class="flex gap-1">
-                            ${style.colors.secondary.map(c => `<div class="w-6 h-6 rounded border border-gray-200 shadow-sm" style="background-color: ${c};" title="${c}"></div>`).join('')}
+                            ${style.colors.secondary.map(c => `<div class="w-6 h-6 rounded border border-gray-200 dark:border-slate-600 shadow-sm" style="background-color: ${c};" title="${c}"></div>`).join('')}
                         </div>
                     </div>
                 </div>
@@ -680,18 +679,18 @@ document.addEventListener("DOMContentLoaded", () => {
                     </div>
                 </div>
 
-                <div class="space-y-2 pt-3 border-t border-gray-100 mt-auto">
+                <div class="space-y-2 pt-3 border-t border-gray-100 dark:border-slate-700/60 mt-auto">
                     <label class="flex items-center space-x-2 cursor-pointer group">
                         <input type="radio" name="selected_typography" value="${style.name}" class="form-radio text-brand-600 focus:ring-brand-500 h-4 w-4" onchange="window.updatePreview()" ${index === 0 ? 'checked' : ''}>
-                        <span class="text-xs font-medium text-gray-600 group-hover:text-brand-600 transition-colors">Usar tipografía</span>
+                        <span class="text-xs font-medium text-gray-600 dark:text-slate-300 group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors">Usar tipografía</span>
                     </label>
                     <label class="flex items-center space-x-2 cursor-pointer group">
                         <input type="radio" name="selected_colors" value="${style.name}" class="form-radio text-brand-600 focus:ring-brand-500 h-4 w-4" onchange="window.updatePreview()" ${index === 0 ? 'checked' : ''}>
-                        <span class="text-xs font-medium text-gray-600 group-hover:text-brand-600 transition-colors">Usar colores</span>
+                        <span class="text-xs font-medium text-gray-600 dark:text-slate-300 group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors">Usar colores</span>
                     </label>
                     <label class="flex items-center space-x-2 cursor-pointer group">
                         <input type="radio" name="selected_shapes" value="${style.name}" class="form-radio text-brand-600 focus:ring-brand-500 h-4 w-4" onchange="window.updatePreview()" ${index === 0 ? 'checked' : ''}>
-                        <span class="text-xs font-medium text-gray-600 group-hover:text-brand-600 transition-colors">Usar formas</span>
+                        <span class="text-xs font-medium text-gray-600 dark:text-slate-300 group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors">Usar formas</span>
                     </label>
                 </div>
             `;
