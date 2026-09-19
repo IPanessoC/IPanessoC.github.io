@@ -735,4 +735,265 @@ document.addEventListener("DOMContentLoaded", () => {
             gsap.set(links, { clearProps: "all" });
         };
     });
+        // 20 Estilos con 3 Colores Principales y 3 Secundarios
+    const styles = [
+        { name: "Minimalista Elegante", description: "Limpio, con mucho espacio y tipografía refinada.", fontClass: "font-inter", shapeClasses: "rounded-sm", colors: { primary: ["#ffffff", "#f8fafc", "#f1f5f9"], secondary: ["#0f172a", "#334155", "#64748b"] } },
+        { name: "Brutalista Moderno", description: "Contraste fuerte, bordes duros y sombras sólidas.", fontClass: "font-space", shapeClasses: "rounded-none border-4 border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]", colors: { primary: ["#ffffff", "#e5e5e5", "#d4d4d4"], secondary: ["#000000", "#ef4444", "#3b82f6"] } },
+        { name: "Elegante Clásico", description: "Tradicional, tipografía serif y tonos sobrios.", fontClass: "font-playfair", shapeClasses: "rounded-md shadow-md", colors: { primary: ["#faf9f6", "#f3f0e9", "#e8e2d5"], secondary: ["#1a1a1a", "#4a4a4a", "#8b7355"] } },
+        { name: "Tecnológico / IT", description: "Colores fríos y oscuros, look de código y precisión.", fontClass: "font-roboto", shapeClasses: "rounded-none rounded-tl-2xl rounded-br-2xl shadow-lg", colors: { primary: ["#0f172a", "#1e293b", "#334155"], secondary: ["#38bdf8", "#818cf8", "#e0e7ff"] } },
+        { name: "Amigable / Startup", description: "Redondeado, accesible y con colores cálidos.", fontClass: "font-poppins", shapeClasses: "rounded-2xl shadow-sm", colors: { primary: ["#ffffff", "#fef2f2", "#fee2e2"], secondary: ["#ef4444", "#b91c1c", "#7f1d1d"] } },
+        { name: "Editorial / Revista", description: "Sofisticado, centrado en texto e imágenes amplias.", fontClass: "font-lora", shapeClasses: "rounded-sm", colors: { primary: ["#fdfbf7", "#f4f0e6", "#e9e3d5"], secondary: ["#2c1810", "#4a2c2a", "#8c5a4f"] } },
+        { name: "Monocromático Oscuro", description: "Variaciones de negros y grises profundos.", fontClass: "font-inter", shapeClasses: "rounded-lg border border-gray-700", colors: { primary: ["#09090b", "#18181b", "#27272a"], secondary: ["#fafafa", "#e4e4e7", "#a1a1aa"] } },
+        { name: "Juguetón Pop", description: "Vibrante, formas muy redondeadas y divertido.", fontClass: "font-poppins", shapeClasses: "rounded-[2rem] shadow-xl", colors: { primary: ["#fdf4ff", "#fae8ff", "#f5d0fe"], secondary: ["#c026d3", "#db2777", "#9333ea"] } },
+        { name: "Corporativo Moderno", description: "Azules de confianza, limpio y muy profesional.", fontClass: "font-space", shapeClasses: "rounded-md shadow-sm border border-gray-200", colors: { primary: ["#ffffff", "#f3f4f6", "#e5e7eb"], secondary: ["#1d4ed8", "#1e40af", "#1f2937"] } },
+        { name: "Vintage Nostálgico", description: "Tonos sepia y cálidos, look retro encantador.", fontClass: "font-lora", shapeClasses: "rounded-xl border-2 border-dashed", colors: { primary: ["#fef3c7", "#fde68a", "#fcd34d"], secondary: ["#78350f", "#92400e", "#b45309"] } },
+        { name: "Cyberpunk", description: "Alto contraste, neón sobre negro absoluto.", fontClass: "font-roboto", shapeClasses: "rounded-none border-l-4 border-r-4 shadow-[0_0_15px_rgba(0,255,255,0.5)]", colors: { primary: ["#000000", "#111111", "#222222"], secondary: ["#00ff00", "#ff00ff", "#00ffff"] } },
+        { name: "Lujo Moderno", description: "Negros y dorados, exuda exclusividad.", fontClass: "font-playfair", shapeClasses: "rounded-none border border-yellow-600", colors: { primary: ["#111827", "#1f2937", "#374151"], secondary: ["#fbbf24", "#f59e0b", "#d97706"] } },
+        { name: "Natural Orgánico", description: "Verdes suaves, evoca naturaleza y bienestar.", fontClass: "font-inter", shapeClasses: "rounded-[30%_70%_70%_30%/30%_30%_70%_70%]", colors: { primary: ["#f0fdf4", "#dcfce7", "#bbf7d0"], secondary: ["#14532d", "#166534", "#15803d"] } },
+        { name: "Neumorfismo Suave", description: "Efectos de plastilina y sombras suaves integradas.", fontClass: "font-poppins", shapeClasses: "rounded-3xl shadow-lg border border-white border-opacity-40", colors: { primary: ["#f1f5f9", "#e2e8f0", "#cbd5e1"], secondary: ["#475569", "#334155", "#0f172a"] } },
+        { name: "Geométrico Estricto", description: "Líneas rectas, preciso, balance de grises.", fontClass: "font-space", shapeClasses: "rounded-none", colors: { primary: ["#ffffff", "#f4f4f5", "#e4e4e7"], secondary: ["#27272a", "#3f3f46", "#52525b"] } },
+        { name: "Art Deco", description: "Azul oscuro, oro y acentos amarillos.", fontClass: "font-playfair", shapeClasses: "rounded-t-full rounded-b-md border-2", colors: { primary: ["#0f172a", "#1e293b", "#334155"], secondary: ["#d4af37", "#aa8c2c", "#fef08a"] } },
+        { name: "Bauhaus", description: "Colores primarios fuertes, diseño utilitario.", fontClass: "font-inter", shapeClasses: "rounded-full", colors: { primary: ["#f8fafc", "#f1f5f9", "#e2e8f0"], secondary: ["#dc2626", "#2563eb", "#eab308"] } },
+        { name: "Tropical Vibrante", description: "Celestes y naranjas, energía y movimiento.", fontClass: "font-poppins", shapeClasses: "rounded-tl-[2rem] rounded-br-[2rem] shadow-md", colors: { primary: ["#ecfeff", "#cffafe", "#a5f3fc"], secondary: ["#0891b2", "#0d9488", "#ea580c"] } },
+        { name: "Gótico / Dark", description: "Oscuro, toques rojizos y estética lúgubre.", fontClass: "font-lora", shapeClasses: "rounded-t-[3rem] border-b-4", colors: { primary: ["#000000", "#0a0a0a", "#171717"], secondary: ["#a3a3a3", "#d4d4d8", "#7f1d1d"] } },
+        { name: "Espacial Sci-Fi", description: "Azul profundo espacial y morados eléctricos.", fontClass: "font-roboto", shapeClasses: "rounded-3xl border border-purple-500", colors: { primary: ["#020617", "#0f172a", "#1e293b"], secondary: ["#c084fc", "#a855f7", "#38bdf8"] } }
+    ];
+
+    const container = document.getElementById('styleCards');
+
+    styles.forEach((style, index) => {
+        const card = document.createElement('div');
+        card.className = "bg-white border border-gray-200 rounded-xl p-5 hover:shadow-xl hover:border-brand-200 transition-all duration-300 flex flex-col h-full";
+        
+        card.innerHTML = `
+            <h4 class="font-bold text-lg text-gray-900 mb-1">${style.name}</h4>
+            <p class="text-xs text-gray-500 mb-4 h-8 overflow-hidden">${style.description}</p>
+            
+            <!-- Paleta de Colores en la Tarjeta -->
+            <div class="mb-4 bg-gray-50 p-2 rounded-lg border border-gray-100">
+                <div class="flex justify-between items-center mb-2">
+                    <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Principales</span>
+                    <div class="flex gap-1">
+                        ${style.colors.primary.map(c => `<div class="w-6 h-6 rounded border border-gray-200 shadow-sm" style="background-color: ${c};" title="${c}"></div>`).join('')}
+                    </div>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Secundarios</span>
+                    <div class="flex gap-1">
+                        ${style.colors.secondary.map(c => `<div class="w-6 h-6 rounded border border-gray-200 shadow-sm" style="background-color: ${c};" title="${c}"></div>`).join('')}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mini Ejemplo Visual -->
+            <div class="mb-5 p-3 flex flex-col items-center justify-center relative overflow-hidden transition-all duration-300 shadow-inner" style="min-height: 100px; background-color: ${style.colors.primary[0]}; border: 1px solid ${style.colors.primary[2]}; border-radius: 8px;">
+                <div class="${style.fontClass} w-full text-center transition-all" style="color: ${style.colors.secondary[0]};">
+                    <h5 class="text-sm font-bold mb-1">Tipografía</h5>
+                    <div class="flex justify-center gap-2 mt-2">
+                        <div class="${style.shapeClasses} w-14 h-5 flex items-center justify-center text-[9px] font-bold transition-all" style="background-color: ${style.colors.secondary[0]}; color: ${style.colors.primary[0]}; border: 1px solid ${style.colors.secondary[0]};">Botón</div>
+                        <div class="${style.shapeClasses} w-14 h-5 flex items-center justify-center text-[9px] font-bold transition-all opacity-80" style="background-color: ${style.colors.primary[1]}; color: ${style.colors.secondary[0]}; border: 1px solid ${style.colors.secondary[1]};">Forma</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Controles de Selección -->
+            <div class="space-y-2 pt-3 border-t border-gray-100 mt-auto">
+                <label class="flex items-center space-x-2 cursor-pointer group">
+                    <input type="radio" name="selected_typography" value="${style.name}" class="form-radio text-brand-600 focus:ring-brand-500 h-4 w-4" onchange="updatePreview()" ${index === 0 ? 'checked' : ''}>
+                    <span class="text-xs font-medium text-gray-600 group-hover:text-brand-600 transition-colors">Usar tipografía</span>
+                </label>
+                <label class="flex items-center space-x-2 cursor-pointer group">
+                    <input type="radio" name="selected_colors" value="${style.name}" class="form-radio text-brand-600 focus:ring-brand-500 h-4 w-4" onchange="updatePreview()" ${index === 0 ? 'checked' : ''}>
+                    <span class="text-xs font-medium text-gray-600 group-hover:text-brand-600 transition-colors">Usar colores</span>
+                </label>
+                <label class="flex items-center space-x-2 cursor-pointer group">
+                    <input type="radio" name="selected_shapes" value="${style.name}" class="form-radio text-brand-600 focus:ring-brand-500 h-4 w-4" onchange="updatePreview()" ${index === 0 ? 'checked' : ''}>
+                    <span class="text-xs font-medium text-gray-600 group-hover:text-brand-600 transition-colors">Usar formas</span>
+                </label>
+            </div>
+        `;
+        container.appendChild(card);
+    });
+
+    function updatePreview() {
+        const fontName = document.querySelector('input[name="selected_typography"]:checked')?.value;
+        const colorName = document.querySelector('input[name="selected_colors"]:checked')?.value;
+        const shapeName = document.querySelector('input[name="selected_shapes"]:checked')?.value;
+
+        if(!fontName || !colorName || !shapeName) return;
+
+        const fontStyle = styles.find(s => s.name === fontName);
+        const colorStyle = styles.find(s => s.name === colorName);
+        const shapeStyle = styles.find(s => s.name === shapeName);
+
+        // Colores
+        const p0 = colorStyle.colors.primary[0];
+        const p1 = colorStyle.colors.primary[1];
+        const p2 = colorStyle.colors.primary[2];
+        const s0 = colorStyle.colors.secondary[0];
+        const s1 = colorStyle.colors.secondary[1];
+        const s2 = colorStyle.colors.secondary[2];
+
+        // Container (Fondo y Fuente global)
+        const previewContainer = document.getElementById('previewContainer');
+        previewContainer.className = `p-8 md:p-14 relative w-full h-full min-h-[400px] flex flex-col justify-center ${fontStyle.fontClass}`;
+        previewContainer.style.backgroundColor = p0;
+        previewContainer.style.color = s0;
+
+        // Nav y Header
+        document.getElementById('prevHeaderBorder').style.borderColor = s2;
+        document.getElementById('prevNav').style.color = s1;
+
+        // Textos y Botones
+        const badge = document.getElementById('prevBadge');
+        badge.className = `inline-block px-4 py-1.5 text-xs font-bold tracking-widest uppercase shadow-sm ${shapeStyle.shapeClasses}`;
+        badge.style.backgroundColor = p2;
+        badge.style.color = s0;
+        badge.style.border = `1px solid ${s2}`;
+
+        const btnPri = document.getElementById('prevButtonPrimary');
+        btnPri.className = `px-8 py-3.5 font-bold transition-transform hover:-translate-y-1 shadow-lg ${shapeStyle.shapeClasses}`;
+        btnPri.style.backgroundColor = s0;
+        btnPri.style.color = p0;
+        if(shapeStyle.name.includes("Brutalista")) {
+            btnPri.style.border = `2px solid ${s0}`;
+        } else {
+            btnPri.style.border = 'none';
+        }
+
+        const btnSec = document.getElementById('prevButtonSecondary');
+        btnSec.className = `px-8 py-3.5 font-bold transition-transform hover:-translate-y-1 border-2 ${shapeStyle.shapeClasses}`;
+        btnSec.style.backgroundColor = 'transparent';
+        btnSec.style.borderColor = s0;
+        btnSec.style.color = s0;
+
+        // Área Visual (Placeholder y Formas Abstractas)
+        const imgPlaceholder = document.getElementById('prevImagePlaceholder');
+        imgPlaceholder.className = `w-full h-64 md:h-80 flex items-center justify-center relative overflow-hidden shadow-2xl ${shapeStyle.shapeClasses}`;
+        imgPlaceholder.style.backgroundColor = p1;
+        imgPlaceholder.style.border = `1px solid ${p2}`;
+
+        document.getElementById('prevImageText').style.color = s0;
+
+        const shape1 = document.getElementById('prevShape1');
+        shape1.className = `absolute w-40 h-40 top-[-20px] left-[-20px] opacity-70 ${shapeStyle.shapeClasses}`;
+        shape1.style.backgroundColor = s1;
+
+        const shape2 = document.getElementById('prevShape2');
+        shape2.className = `absolute w-32 h-32 bottom-10 right-10 opacity-90 ${shapeStyle.shapeClasses}`;
+        shape2.style.backgroundColor = s2;
+        
+        const shape3 = document.getElementById('prevShape3');
+        shape3.className = `absolute w-16 h-16 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-50 ${shapeStyle.shapeClasses}`;
+        shape3.style.backgroundColor = s0;
+    }
+
+    // Inicializar Vista Previa al cargar
+    window.onload = () => {
+        updatePreview();
+    };
+
+    // Reemplazo de la función de descarga a Markdown por Fetch/API
+    document.getElementById('webForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        // Referencias al botón para la animación de carga
+        const submitBtn = document.getElementById('submitBtn');
+        const btnText = document.getElementById('btnText');
+        const btnSpinner = document.getElementById('btnSpinner');
+
+        // Cambiar estado a cargando
+        submitBtn.disabled = true;
+        btnText.classList.add('opacity-0');
+        setTimeout(() => {
+            btnSpinner.classList.remove('hidden');
+        }, 150);
+
+        // Recopilación de datos
+        const nombre = document.getElementById('nombre').value || 'No especificado';
+        const profesion = document.getElementById('profesion').value || 'No especificada';
+        const descripcion = document.getElementById('descripcion').value || 'No especificada';
+        
+        const objetivos = Array.from(document.querySelectorAll('input[name="objetivos"]:checked')).map(el => el.value);
+        const funciones = Array.from(document.querySelectorAll('input[name="funciones"]:checked')).map(el => el.value);
+        
+        const dispositivos = document.querySelector('input[name="dispositivos"]:checked')?.value || 'No especificado';
+        const contenido = document.querySelector('input[name="contenido"]:checked')?.value || 'No especificado';
+        const dominio = document.querySelector('input[name="dominio"]:checked')?.value || 'No especificado';
+        const tiempo = document.getElementById('tiempo').value || 'No especificado';
+        
+        const mantNode = document.querySelector('input[name="mantenimiento"]:checked');
+        let mantenimiento = 'No especificado';
+        if(mantNode) {
+            mantenimiento = mantNode.value === 'casi_estatica' ? 
+                'Página casi estática (sin mantenimiento recurrente)' : 
+                'Actualización periódica (requiere mantenimiento)';
+        }
+
+        const fontName = document.querySelector('input[name="selected_typography"]:checked')?.value || 'No especificado';
+        const colorName = document.querySelector('input[name="selected_colors"]:checked')?.value || 'No especificado';
+        const shapeName = document.querySelector('input[name="selected_shapes"]:checked')?.value || 'No especificado';
+        
+        // Extracción colores hex
+        let coloresHex = 'No especificados';
+        if (colorName !== 'No especificado') {
+            const colorStyle = styles.find(s => s.name === colorName);
+            if (colorStyle) {
+                coloresHex = `Primarios: ${colorStyle.colors.primary.join(', ')} | Secundarios: ${colorStyle.colors.secondary.join(', ')}`;
+            }
+        }
+
+        const sentimientos = document.getElementById('sentimientos').value || 'Ninguno especificado';
+        const no_quiero = document.getElementById('no_quiero').value || 'Ninguno especificado';
+
+        // Formateando el cuerpo de la petición (Payload)
+        const payload = {
+            Nombre_Marca: nombre,
+            Profesion_Sector: profesion,
+            Descripcion_Actividad: descripcion,
+            Objetivos: objetivos.length > 0 ? objetivos.join(', ') : 'Ninguno',
+            Funciones_Deseadas: funciones.length > 0 ? funciones.join(', ') : 'Ninguna',
+            Dispositivos_Principales: dispositivos,
+            Estado_Contenido: contenido,
+            Dominio_Hosting: dominio,
+            Tiempo_Estimado: tiempo,
+            Mantenimiento_Futuro: mantenimiento,
+            Estilo_Tipografia: fontName,
+            Estilo_Colores: colorName,
+            Colores_Hexadecimales: coloresHex,
+            Estilo_Formas: shapeName,
+            Sentimientos_Deseados: sentimientos,
+            Elementos_No_Deseados: no_quiero
+        };
+
+        // AQUI PON TU ENDPOINT DE FORMSPREE
+        const ENDPOINT_FORMSPREE = 'https://formspree.io/f/TU_ID_AQUI';
+
+        try {
+            const response = await fetch(ENDPOINT_FORMSPREE, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
+
+            if (response.ok) {
+                alert('¡Tus requerimientos han sido enviados con éxito! Nos pondremos en contacto pronto.');
+                document.getElementById('webForm').reset();
+                updatePreview(); // Actualiza la vista previa al reiniciar
+            } else {
+                alert('Hubo un problema al enviar el formulario. Por favor intenta nuevamente.');
+            }
+        } catch (error) {
+            console.error('Error durante el envío:', error);
+            alert('Ocurrió un error de red. Verifica tu conexión a internet e inténtalo de nuevo.');
+        } finally {
+            // Restaurar botón de envío
+            btnSpinner.classList.add('hidden');
+            btnText.classList.remove('opacity-0');
+            submitBtn.disabled = false;
+        }
+    });
 });
